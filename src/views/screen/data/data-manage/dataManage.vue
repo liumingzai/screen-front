@@ -134,7 +134,7 @@
 </template>
 
 <script>
-import DataManageService from './DataManageService'
+import DataManageService from './dataManageService'
 var _DataManageService = new DataManageService()
 
 export default {

@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import DataEditService from './DataEditService'
+import DataEditService from './dataEditService'
 var _DataEditService = new DataEditService()
 //引入表格插件
 import Handsontable from 'handsontable-pro/dist/handsontable.full.js'

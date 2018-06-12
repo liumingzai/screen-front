@@ -135,7 +135,7 @@
 
 <script>
 import moment from "moment";
-import UserService from "./UserService";
+import UserService from "./userService";
 var _UserService = new UserService();
 export default {
   name: "user",
