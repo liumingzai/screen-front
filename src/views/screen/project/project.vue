@@ -109,7 +109,7 @@
               <el-form-item label-width='60px'>
                  <el-button type='primary' size='small' @click="addProject" v-show="idEdit==false">确定</el-button>
                  <el-button type='primary' size='small' @click="handleEdit" v-show="idEdit==true">保存</el-button>
-                 <el-button size='small'>取消</el-button>
+                 <el-button size='small' @click="projectVisible==false">取消</el-button>
               </el-form-item>
                
                 
