@@ -147,7 +147,8 @@ export default {
          activeList:[
             {name:'启用',value:'Y'},
             {name:'停用',value:'N'}
-          ] 
+          ],
+         dataNum:0 
       }
     },
     methods:{
@@ -245,38 +246,52 @@ export default {
        },
        handleDelete(row){
            console.log(row)
-            this.$confirm('此操作将永久删除该项目, 是否继续?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            _ProjectService.deleteProject(row.id).then((data) => {
-                console.log(data)
-                if(data.code==2000){
-                  this.$message.success('删除项目成功')
-                    this.totalPageData -= 1;
-                    if (this.totalPageData / 10 <= 1) {
-                      this.searchParams.pageNum = 1;
-                    } else if (this.totalPageData / 10 == this.searchParams.pageNum - 1) {
-                      this.searchParams.pageNum--;
-                    } else {
-                      this.searchParams.pageNum = this.searchParams.pageNum;
-                    }
-                  this.getProjectList()
-                }else{
-                  this.$message.error(data.message)
-                }
+            _ProjectService.getDataNumByProjectId(row.id).then((data) => {
+              console.log(data)
+              if(data.code==2000){
+                this.dataNum=data.data
+              }else{
+                this.$message.error(data.message)
+              }
             }).catch((err) => {
-              console.log(err)
-              this.$message.error('网络错误')
-            });
+               this.$message.error('网络错误')  
+            }).then(()=>{
 
-          }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: '已取消删除'
-            });          
-          });  
+              this.$confirm(`该项目下共有${this.dataNum}条数据, 是否继续?`, '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                _ProjectService.deleteProject(row.id).then((data) => {
+                    console.log(data)
+                    if(data.code==2000){
+                      this.$message.success('删除项目成功')
+                        this.totalPageData -= 1;
+                        if (this.totalPageData / 10 <= 1) {
+                          this.searchParams.pageNum = 1;
+                        } else if (this.totalPageData / 10 == this.searchParams.pageNum - 1) {
+                          this.searchParams.pageNum--;
+                        } else {
+                          this.searchParams.pageNum = this.searchParams.pageNum;
+                        }
+                      this.getProjectList()
+                    }else{
+                      this.$message.error(data.message)
+                    }
+                }).catch((err) => {
+                  console.log(err)
+                  this.$message.error('网络错误')
+                });
+
+              }).catch(() => {
+                this.$message({
+                  type: 'info',
+                  message: '已取消删除'
+                });          
+              }); 
+
+           })
+ 
        },
          //分页处理
        handlePage(num){

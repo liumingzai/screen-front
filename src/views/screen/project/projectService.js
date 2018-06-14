@@ -36,6 +36,11 @@ class ProjectService {
     const method = 'admin/pj/deleteProject'
     return this.http.DELETE(method,{id:id})
   }
+  //获取项目下数据
+  getDataNumByProjectId(id){
+    const method = 'admin/pj/getDataNumByProjectId'
+    return this.http.GET(method,{projectId:id})
+  }
 
 
 
