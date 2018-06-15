@@ -103,20 +103,6 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="接口状态" width="">
-          <template slot-scope="scope">
-            <el-switch 
-            v-model="scope.row.status" 
-            active-value="Y" 
-            inactive-value="N" 
-            @change="handleUpdateState(scope.row)">
-
-            </el-switch>
-            <span v-show="scope.row.status=='Y'">启用</span>
-            <span v-show="scope.row.status=='N'">停用</span>
-          </template>
-        </el-table-column>
-
         <el-table-column label="操作" width="">
           <template slot-scope="scope">
 
