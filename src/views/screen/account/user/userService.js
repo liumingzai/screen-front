@@ -37,7 +37,17 @@ class UserService {
       const method = 'admin/um/deleteAccount'
       return this.http.DELETE(method,{id:id})
   }
+    //批量删除用户
 
+  deleteAccounts(ids){
+      const method = 'admin/um/deleteAccounts'
+      return this.http.POST(method,{ids:ids})
+  }
+  
+  updateAccountsState(ids,state){
+      const method = 'admin/um/updateAccountsState'
+      return this.http.POST(method,{ids:ids,state:state})
+  }
   
 
 

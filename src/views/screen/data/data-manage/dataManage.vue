@@ -239,10 +239,6 @@ export default {
         }
       }
     },
-    toggleSelection() {
-      
-      console.log(this.multipleSelection);
-    },
     handleSelectAll(val) {
       console.log(val);
       if (val == true) {

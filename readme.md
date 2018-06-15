@@ -1,10 +1,10 @@
 # screen
 
-> A Vue.js project
+## 扬州大屏项目前端模块
+# Vue.js + Element-ui
 
 ## Build Setup
 
-``` bash
 # install dependencies
 npm install
 

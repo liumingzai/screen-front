@@ -34,7 +34,31 @@
     </div>
 
     <div>
-      <el-table :data="userList" style="width: 100%" v-loading='loading'>
+
+      <div class="table_header">
+        
+        <span>用户列表</span>
+        <div class="tb_head_right">
+            <el-checkbox v-model="isAllchecked" @change="handleSelectAll">全选</el-checkbox>
+            <span style="padding-left:20px">批量操作</span>
+            <el-select v-model="operationTpye" clearable>
+              <el-option value='批量删除'></el-option>
+              <el-option value='批量停用'></el-option>
+              <el-option value='批量启用'></el-option>
+            </el-select>
+            <el-button size='small' type='primary' @click="operateDatas">确定</el-button>
+        </div>
+       
+      </div>  
+
+      <el-table
+      ref="multipleTable" 
+      :data="userList" 
+      style="width: 100%" 
+      v-loading='loading' 
+      @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="30">
+        </el-table-column>
         <el-table-column prop="username" label="用户名" width="">
         </el-table-column>
         <el-table-column prop="phone" label="手机号" width="">
@@ -161,7 +185,10 @@ export default {
         state: "1"
       },
       projectList: [],
-      isEdit: false
+      isEdit: false,
+      multipleSelection:[],
+      operationTpye:"",
+      isAllchecked: false
     };
   },
   methods: {
@@ -345,6 +372,7 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
+         
            _UserService.deleteAccount(row.id).then((data) => {
               console.log(data)
               if(data.code==2000){
@@ -366,14 +394,123 @@ export default {
             this.$message.error('网络错误')
           });
 
-        }).catch(() => {
+        }).catch((err) => {
+          console.log(err)
           this.$message({
             type: 'info',
             message: '已取消删除'
           });          
         }); 
 
-    }  
+    },
+    //批量操作
+    operateDatas() {
+      console.log(this.operationTpye);
+      console.log(this.multipleSelection.length);
+      if (this.multipleSelection.length == 0) {
+        this.$message.error("请先选择数据");
+        return;
+      } else {
+        if (this.operationTpye == "批量删除") {
+          // console.log(1)
+          this.$confirm("此操作将永久删除所选用户, 是否继续?", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          })
+            .then(() => {
+              _UserService
+                .deleteAccounts(this.multipleSelection)
+                .then(data => {
+                  console.log(data);
+                  if (data.code == 2000) {
+                    this.$message.success("批量删除用户成功");
+                    this.totalPageData -= this.multipleSelection.length;
+                    if (this.totalPageData / 10 <= 1) {
+                      this.searchParams.pageNum = 1;
+                    } else if (
+                      this.totalPageData / 10 ==
+                      this.searchParams.pageNum - 1
+                    ) {
+                      this.searchParams.pageNum--;
+                    } else {
+                      this.searchParams.pageNum = this.searchParams.pageNum;
+                    }
+                    this.getUserList();
+                  }
+                })
+                .catch(err => {
+                  console.log(err);
+                  this.$message.error("网络错误");
+                });
+            })
+            .catch(() => {
+              this.$message({
+                type: "info",
+                message: "已取消删除"
+              });
+            });
+        } else if (this.operationTpye == "批量启用") {
+          console.log(2);
+          _UserService
+            .updateAccountsState(this.multipleSelection, "1")
+            .then(data => {
+              console.log(data);
+              if (data.code == 2000) {
+                this.$message.success("批量启用成功");
+                this.getUserList();
+              } else {
+                this.$message.error(data.message);
+              }
+            })
+            .catch(err => {
+              console.log(err);
+              this.$message.error("网络错误");
+            });
+        } else if (this.operationTpye == "批量停用") {
+          console.log(3);
+          _UserService
+            .updateAccountsState(this.multipleSelection, "0")
+            .then(data => {
+              console.log(data);
+              if (data.code == 2000) {
+                this.$message.success("批量停用成功");
+                this.getUserList();
+              } else {
+                this.$message.error(data.message);
+              }
+            })
+            .catch(err => {
+              console.log(err);
+              this.$message.error("网络错误");
+            });
+        } else {
+          console.log(4);
+          this.$message.error("请选择操作类型");
+        }
+      }
+    },
+    handleSelectAll(val) {
+      console.log(val);
+      if (val == true) {
+        this.$refs.multipleTable.clearSelection();
+        this.userList.forEach(row => {
+          this.$refs.multipleTable.toggleRowSelection(row);
+        });
+      } else {
+        this.$refs.multipleTable.clearSelection();
+      }
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val.map(item => {
+        return item.id;
+      });
+      if (this.multipleSelection.length == this.userList.length) {
+        this.isAllchecked = true;
+      } else {
+        this.isAllchecked = false;
+      }
+    },  
   },
   created() {
     this.getUserList();
@@ -386,6 +523,14 @@ export default {
 .user_manage {
   .usmg_title {
     padding-bottom: 20px;
+  }
+  .table_header{
+    
+    padding-bottom: 10px;
+    height: 50px;
+  }
+  .tb_head_right{
+    float: right
   }
 }
 </style>
