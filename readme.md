@@ -1,7 +1,7 @@
 # screen
 
 ## 扬州大屏项目前端模块
-# Vue.js + Element-ui
+# Vue.js + Element-ui + handsontable
 
 ## Build Setup
 
