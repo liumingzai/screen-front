@@ -112,7 +112,7 @@
     </div>
 
     <el-dialog title="用户信息" :visible.sync="userFormVisible" :before-close="handleUserFormClose" width="60%">
-      <el-form ref="userParams" :model='userParams' label-width='80px'>
+       <el-form ref="userParams" :model='userParams' label-width='80px'>
         <div style="width:300px">
           <el-form-item label="用户名">
             <el-input v-model="userParams.username" placeholder="用户名"></el-input>
@@ -135,15 +135,39 @@
           <span v-show="userParams.state=='0'">停用</span>
         </el-form-item>
 
-        <el-form-item label='负责项目'>
-          <el-checkbox-group v-model="userParams.projects">
-            <el-checkbox v-for="project in projectList" :label="project.name" :key='project.name'>
-            </el-checkbox>
-          </el-checkbox-group>
+        <el-form-item label='用户角色' v-if="userType==1">
+           <el-radio-group v-model="userParams.roles">
+              <el-radio  label="2">项目管理员</el-radio>
+              <el-radio  label="3">项目人员</el-radio>
+
+           </el-radio-group>
+              
 
         </el-form-item>
+        <div style="width:300px" v-else>
+          <el-form-item label='用户角色'>
+             
+               <el-input disabled placeholder="项目人员"></el-input>
+              
+          </el-form-item>
+        </div>
+        <el-form-item label='负责项目' v-if="userType==1">
+          
+          <el-radio-group v-model="userParams.projects">
 
-      </el-form>
+            <el-radio v-for="project in projectList" :label='project.name' :key="project.name">
+
+            </el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <div style="width:300px" v-else>
+          <el-form-item label='负责项目'>
+              
+              <el-input disabled :placeholder="projectName"></el-input>
+              
+          </el-form-item>
+        </div> 
+      </el-form> 
 
       <span slot="footer" class="dialog-footer">
 
@@ -173,6 +197,8 @@ export default {
         phone: "",
         state: "",
         type: ""
+        
+        
       },
       typeList: [{ name: "管理员", value: 1 }, { name: "研究员", value: 2 }],
       activeList: [{ name: "启用", value: 1 }, { name: "停用", value: 0 }],
@@ -181,9 +207,14 @@ export default {
         username: "",
         phone: "",
         password: "",
-        projects: [],
-        state: "1"
+        projects: null,
+        roles:'3',
+        state: "1",
+        
       },
+      uid:'',
+      userType:null,
+      projectName:null,
       projectList: [],
       isEdit: false,
       multipleSelection:[],
@@ -194,7 +225,8 @@ export default {
   methods: {
       //获取用户列表
     getUserList() {
-      _UserService
+      if (this.userType==1){
+          _UserService
         .getAccountList(this.searchParams)
         .then(data => {
           console.log(data);
@@ -224,6 +256,42 @@ export default {
         .catch(err => {
           console.log(data);
         });
+      }else{
+         const searchParams = {projectName:this.projectName,uid:this.uid,...this.searchParams};
+         _UserService
+        .getProjectAccountList(searchParams)
+        .then(data => {
+          console.log(data);
+          if (data.code == 2000) {
+            this.totalPageData = data.size;
+            this.userList = data.data.map(item => {
+              const userType = item.roles[0].name;
+              const projects = item.projects.map(item => {
+                return item.name;
+              });
+              return {
+                username: item.username,
+                phone: item.phone,
+                userType: userType,
+                projects: projects,
+                createTime: moment(item.createTime).format("YYYY-MM-DD"),
+                state: item.state,
+                id: item.id,
+                password: item.password
+              };
+            });
+            this.loading = false;
+          }else{
+            this.$message.error(data.message)
+          }
+        })
+        .catch(err => {
+          console.log(data);
+        });
+
+      }
+
+    
     },
        //搜索相关用户
     handleSearch(){
@@ -261,20 +329,19 @@ export default {
       //增加用户
     handleAddUser() {
       const password = btoa(this.userParams.password);
-      const projects = this.userParams.projects.map(item => {
-        let newProject = {};
-        for (let i = 0; i < this.projectList.length; i++) {
-          if (item === this.projectList[i].name) {
-            newProject = { id: this.projectList[i].id, name: item };
-          }
-        }
-        return newProject;
-      });
+     
+      const projects = this.projectList.filter(item => item.name===this.userParams.projects);
+       
+      const roles = this.userParams.roles==2 ? [{id:2,name:'项目管理员'}] : [{id:3,name:'项目人员'}] ;
+      
+      //console.log(this.userParams);
       const userParams = {
         ...this.userParams,
         password: password,
-        projects: projects
+        projects: projects,
+        roles:roles
       };
+      
       _UserService
         .addAccount(userParams)
         .then(data => {
@@ -300,8 +367,10 @@ export default {
         username: "",
         phone: "",
         password: "",
-        projects: [],
-        state: "1"
+        projects: this.userParams.projects,
+        state: "1",
+        roles:"3",
+        
       };
     },
       //打开编辑弹窗
@@ -513,8 +582,16 @@ export default {
     },  
   },
   created() {
+    const userInfo = JSON.parse(localStorage.getItem('account')) ;
+      //判断用户类型
+    this.userType=userInfo.userType;
+    this.userParams.projects=userInfo.projectName;
+    this.uid = userInfo.uid;
+    this.projectName = userInfo.projectName;
     this.getUserList();
     this.getAllProject();
+    
+    
   }
 };
 </script>

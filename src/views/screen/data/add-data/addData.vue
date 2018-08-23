@@ -9,15 +9,17 @@
             
              <el-form-item label='所属项目'>
 
-                <el-select v-model="addDataParams.project">
+                <el-select v-model="addDataParams.project" v-if="userType==1">
                     <el-option 
                     v-for="item in projectList"
                     :key="item.id"
-                    :value="item.id"
+                    :value="item.name"
                     :label="item.name">
 
                     </el-option>
                 </el-select>
+
+                <el-input disabled v-model="addDataParams.project" v-else style="width:210px"></el-input>
 
              </el-form-item>
 
@@ -98,6 +100,7 @@ export default {
             dataSourceType:'静态数据',
 
          },
+         userType:null,
          projectList:[],
          dataSourceTypeList:['静态数据','csv文件'],
          tableData:[
@@ -160,7 +163,7 @@ export default {
          let project = this.addDataParams.project;
          const pjArr = this.projectList
          for(var i=0; i<pjArr.length; i++){
-           if(project==pjArr[i].id){
+           if(project==pjArr[i].name){
              project={id:pjArr[i].id,name:pjArr[i].name}
              break
            }
@@ -254,6 +257,10 @@ export default {
     }   
     },
     created(){
+        const userInfo = JSON.parse(localStorage.getItem('account'));
+       //判断用户类型
+        this.userType=userInfo.userType;
+        this.addDataParams.project=userInfo.projectName;
         this.getCurrentProject()
     },
     mounted(){

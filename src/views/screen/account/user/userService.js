@@ -4,11 +4,19 @@ class UserService {
   constructor() {
     this.http = new Http();
   }
-    //获取用户列表
+    //获取系统管理员用户列表
   getAccountList(params){
       const method = 'admin/um/getAccountList'
       return this.http.GET(method,params)
   }
+
+  //获取项目管理员用户列表
+
+  getProjectAccountList(params){
+      const method = 'admin/um/getProjectAccountList'
+      return this.http.GET(method,params)
+  }
+
      //获取项目列表   
   getProjectList(){
       const method = 'common/getAllProject'

@@ -11,7 +11,7 @@
 
     <div class="search_form">
       <el-form :model='searchParams' ref='searchParams' :inline='true'>
-        <el-form-item label-width='80px' label='项目名称'>
+        <el-form-item label-width='80px' label='项目名称' v-if="userType==1">
           <el-select v-model="searchParams.projectId" placeholder="全部" clearable>
             <el-option v-for="item in projectList" :key="item.id" :value="item.id" :label="item.name">
 
@@ -143,6 +143,7 @@ export default {
         status: "",
         projectId: ""
       },
+      userType:null,
       projectList: [],
       activeList: [{ name: "启用", value: "Y" }, { name: "停用", value: "N" }],
       loading: true,
@@ -375,6 +376,9 @@ export default {
     }
   },
   created() {
+    const userInfo = JSON.parse(localStorage.getItem('account')) ;
+      //判断用户类型
+    this.userType=userInfo.userType;
     this.getCurrentProject();
     this.getDataList();
   }

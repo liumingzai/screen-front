@@ -23,7 +23,7 @@
                 </el-menu-item>
             </router-link>
 
-           <router-link to="/screen/account/user" v-if="userType==1">
+           <router-link to="/screen/account/user" v-if="userType<3">
                 <el-menu-item index='user'>
                     <!-- <i class="iconfont icon-iconset0358"></i> -->
                     <span>用户管理</span>

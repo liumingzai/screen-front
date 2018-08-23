@@ -47,13 +47,17 @@ export default {
           console.log(data);
           if (data.code == 2000) {
             this.$message.success("登录成功");
-            const typeList = [1, 2]; // 1管理员 2普通用户
+            const typeList = [1, 2,3]; // 1系统管理员 2项目管理员 3项目人员
             const idList = data.data.roles.map(item => item.id);
-            let userType = null; // 1-管理员，2-普通用户
-            const typeNames = ["管理员", "普通用户"];
+            let userType = null; 
+            const typeNames = ["系统管理员", "项目管理员","项目人员"];
             // 暂时的业务，用户和角色都是1对1
             if (idList.length === 1 && typeList.indexOf(idList[0]) > -1) {
               userType = typeList.indexOf(idList[0]) + 1;
+            }
+            let projectName= null;
+            if(data.data.projects.length>0){
+                projectName=data.data.projects[0].name
             }
             const loginData = {
               username: data.data.username,
@@ -65,7 +69,8 @@ export default {
               userType,
               typeName: typeNames[userType - 1],
               state: data.data.state ? "有效" : "无效",
-              id: data.data.id
+              id: data.data.id,
+              projectName:projectName
             };
 
             localStorage.setItem("account", JSON.stringify(loginData));
