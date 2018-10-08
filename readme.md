@@ -1,10 +1,10 @@
 # screen
 
-## 扬州大屏项目数据平台前端模块
-# Vue.js + Element-ui + handsontable
+> A Vue.js project
 
 ## Build Setup
 
+``` bash
 # install dependencies
 npm install
 
