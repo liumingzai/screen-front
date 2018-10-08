@@ -6,11 +6,11 @@
                     
                     <span>大屏数据管理中心</span>
                 </div>
-                <div style="float:right;padding-top:15px;over-flow:hidden">
+                <!-- <div style="float:right;padding-top:15px;over-flow:hidden">
                     <img :src="logo" alt="" style="float:left;width:30px;height:30px;border-radius:50%">
                     <span style="float:left;padding-left:10px;padding-top:5px"> {{username}} </span>
                     <span style="float:left;padding-left:40px;padding-top:4px" @click="logout">退出</span>
-                </div>
+                </div> -->
             </el-header>
             <el-container class="lyt_bottom">
                 <el-aside width="200px" style="background:#4698CC">
@@ -32,23 +32,23 @@ export default {
     name:'layout',
     data(){
         return {
-           logo:'',
-           username:''     
+        //    logo:'',
+        //    username:''     
         }
     },
     components:{
         Navbar
     },
     methods:{
-        logout(){
-            localStorage.removeItem('account')
-            this.$router.push('/')
-        }    
+        // logout(){
+        //     localStorage.removeItem('account')
+        //     this.$router.push('/')
+        // }    
     },
     created(){
-        const userInfo = JSON.parse(localStorage.getItem('account'))
-        this.logo = userInfo.logo;
-        this.username = userInfo.username     
+        // const userInfo = JSON.parse(localStorage.getItem('account'))
+        // this.logo = userInfo.logo;
+        // this.username = userInfo.username     
     }
 }
 </script>
