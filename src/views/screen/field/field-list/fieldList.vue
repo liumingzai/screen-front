@@ -2,38 +2,40 @@
   <div class="data_manage">
     <div class="dtmg_title">
       <span>领域列表(0)</span>
-
       <router-link to="/inno/field/edit">
         <el-button type='primary'>添加领域</el-button>
       </router-link>
-
     </div>
- 
- <div>
+    <div>
 
-      <el-table 
+    <el-table 
       ref="multipleTable" 
       :data="dataList" 
       style="width: 100%" 
       v-loading='loading'>
 
-        <el-table-column prop="dataName" label="领域ID" width="">
+        <el-table-column prop="fieldId" label="领域ID" width="">
         </el-table-column>
 
-        <el-table-column prop="dataSourceType" label="领域名称" width="">
-
+        <el-table-column prop="name" label="领域名称" width="">
         </el-table-column>
 
-        <el-table-column prop="projectName" label="申请人" width="">
+        <el-table-column prop="patentOwner" label="专利申请人" width="">
         </el-table-column>
 
-        <el-table-column prop="apiUrl" label="申请日期" width="">
+        <el-table-column prop="patentCateOwner" label="专利类型分析" width="">
         </el-table-column>
 
-        <el-table-column prop="createTime" label="领域ID" width="">
+        <el-table-column prop="patentTypeOwner" label="专利类型" width="">
         </el-table-column>
 
-        <el-table-column prop="userName" label="上传人" width="">
+        <el-table-column prop="patentType" label="专利类型分布" width="">
+        </el-table-column>
+
+          <el-table-column prop="patentProvince" label="专利区域分布" width="">
+        </el-table-column>
+
+          <el-table-column prop="patentTypeProvince" label="各省专利" width="">
         </el-table-column>
 
         <el-table-column label="操作" width="">
@@ -65,16 +67,14 @@ import FieldService from "../FieldService";
 var _FieldService = new FieldService();
 
 export default {
-  name: "dataManage",
+  name: "fieldList",
   data() {
     return {
       totalPageData: null,
       dataList: [],
       searchParams: {
-        pageNum: 1,
-        dataName: "",
-        status: "",
-        projectId: ""
+        pageNum: 1
+        // name: "",
       },
       loading: true,
       operationTpye: "",

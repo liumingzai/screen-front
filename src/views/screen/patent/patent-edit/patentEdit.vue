@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import PatentService from "./PatentService";
+import PatentService from "../PatentService";
 var _PatentService = new PatentService();
   export default {
     data() {
