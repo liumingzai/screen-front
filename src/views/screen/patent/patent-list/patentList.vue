@@ -1,7 +1,7 @@
 <template>
   <div class="data_manage">
     <div class="dtmg_title">
-      <span>专利列表(0)</span>
+      <span>专利列表({{totalPageData}})</span>
 
       <router-link to="/inno/patent/edit">
         <el-button type='primary'>添加专利</el-button>
@@ -27,10 +27,10 @@
         <el-table-column prop="owner" label="申请人" width="">
         </el-table-column>
 
-        <el-table-column prop="app_date" label="申请日期" width="">
+        <el-table-column prop="appDate" label="申请日期" width="">
         </el-table-column>
 
-        <el-table-column prop="field_id" label="领域ID" width="">
+        <el-table-column prop="field" label="关联领域" width="">
         </el-table-column>
 
         <el-table-column label="操作" width="">
@@ -58,17 +58,19 @@
 </template>
 
 <script>
+import moment from "moment";
 import PatentService from "../PatentService";
 var _PatentService = new PatentService();
 
 export default {
-  name: "dataManage",
+  name: "patentList",
   data() {
     return {
       totalPageData: null,
       dataList: [],
       searchParams: {
-        pageNum: 1
+        pageNum: 1,
+        fieldId: 1
       },
       loading: true,
       operationTpye: "",
@@ -84,14 +86,22 @@ export default {
           console.log(data);
           if (data.code == 2000) {
             this.totalPageData = data.size;
-            this.dataList = data.data;
+            this.dataList = data.data.map(_patent => {
+              return {
+                id: _patent.id,
+                name: _patent.name,
+                owner: _patent.owner,
+                appDate: moment(_patent.appDate).format("YYYY-MM-DD"),
+                field: _patent.field.name
+              }
+            });
             this.loading = false;
           } else {
             this.$message.error(data.message);
           }
         })
         .catch(err => {
-          console.log(data);
+          console.log(err);
           this.$message.error("网络错误");
         });
     },
@@ -113,7 +123,7 @@ export default {
       })
         .then(() => {
           _PatentService
-            .deleteData(row.id)
+            .deletePatentData(row.id)
             .then(data => {
               console.log(data);
               if (data.code == 2000) {

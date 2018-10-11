@@ -1,7 +1,7 @@
 <template>
   <div class="data_manage">
     <div class="dtmg_title">
-      <span>领域列表(0)</span>
+      <span>领域列表({{totalPageData}})</span>
       <router-link to="/inno/field/edit">
         <el-button type='primary'>添加领域</el-button>
       </router-link>
@@ -14,28 +14,28 @@
       style="width: 100%" 
       v-loading='loading'>
 
-        <el-table-column prop="fieldId" label="领域ID" width="">
+        <el-table-column prop="id" label="领域ID" width="">
         </el-table-column>
 
-        <el-table-column prop="name" label="领域名称" width="">
+        <el-table-column :show-overflow-tooltip="true" prop="name" label="领域名称" width="">
         </el-table-column>
 
-        <el-table-column prop="patentOwner" label="专利申请人" width="">
+        <el-table-column :show-overflow-tooltip="true" prop="patentOwner" label="专利申请人" width="">
         </el-table-column>
 
-        <el-table-column prop="patentCateOwner" label="专利类型分析" width="">
+        <el-table-column :show-overflow-tooltip="true" prop="patentCateOwner" label="专利类型分析" width="">
         </el-table-column>
 
-        <el-table-column prop="patentTypeOwner" label="专利类型" width="">
+        <el-table-column :show-overflow-tooltip="true" prop="patentTypeOwner" label="专利类型" width="">
         </el-table-column>
 
-        <el-table-column prop="patentType" label="专利类型分布" width="">
+        <el-table-column :show-overflow-tooltip="true" prop="patentType" label="专利类型分布" width="">
         </el-table-column>
 
-          <el-table-column prop="patentProvince" label="专利区域分布" width="">
+        <el-table-column :show-overflow-tooltip="true" prop="patentProvince" label="专利区域分布" width="">
         </el-table-column>
 
-          <el-table-column prop="patentTypeProvince" label="各省专利" width="">
+        <el-table-column :show-overflow-tooltip="true" prop="patentTypeProvince" label="各省专利" width="">
         </el-table-column>
 
         <el-table-column label="操作" width="">
@@ -74,7 +74,6 @@ export default {
       dataList: [],
       searchParams: {
         pageNum: 1
-        // name: "",
       },
       loading: true,
       operationTpye: "",

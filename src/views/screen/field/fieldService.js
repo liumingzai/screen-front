@@ -7,14 +7,14 @@ class FieldService {
 
     //获取数据列表
   getDataList(params){
-      const method = 'InnoField/getFields'
+      const method = 'innoField/getFields'
       return this.http.GET(method,params)  
 
   }
 
     //删除数据
   deleteData(id){
-     const method = 'InnoField/deleteField'
+     const method = 'innoField/deleteField'
      return this.http.DELETE(method,{fieldId:id}) 
   }
 

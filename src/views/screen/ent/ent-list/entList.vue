@@ -17,28 +17,35 @@
       style="width: 100%" 
       v-loading='loading'>
 
-        <el-table-column prop="dataName" label="专利ID" width="">
+        <el-table-column prop="id" label="企业ID" width="">
         </el-table-column>
 
-        <el-table-column prop="dataSourceType" label="专利名称" width="">
-
+        <el-table-column prop="name" label="企业名称" width="">
         </el-table-column>
 
-        <el-table-column prop="projectName" label="申请人" width="">
+        <el-table-column prop="regCapi" label="注册资本" width="">
         </el-table-column>
 
-        <el-table-column prop="apiUrl" label="申请日期" width="">
+        <el-table-column prop="foundDate" label="成立时间" width="">
+        </el-table-column>
+        
+        <el-table-column :show-overflow-tooltip="true" prop="patentTrend" label="专利趋势" width="">
         </el-table-column>
 
-        <el-table-column prop="createTime" label="领域ID" width="">
+        <el-table-column :show-overflow-tooltip="true" prop="patentType" label="专利类型" width="">
+        </el-table-column>
+      
+        <el-table-column :show-overflow-tooltip="true" prop="caseReason" label="涉诉案由" width="">
         </el-table-column>
 
-        <el-table-column prop="userName" label="上传人" width="">
+        <el-table-column :show-overflow-tooltip="true" prop="caseTrend" label="涉诉趋势" width="">
+        </el-table-column>
+
+        <el-table-column prop="priority" label="优先级" width="">
         </el-table-column>
 
         <el-table-column label="操作" width="">
           <template slot-scope="scope">
-
             <el-button type="text" size="small" @click="handleEdit(scope.row)">编辑</el-button>
             <el-button type='text' size='small' @click="handleDelete(scope.row)">删除</el-button>
           </template>
@@ -61,6 +68,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import EntService from "../EntService";
 var _EntService = new EntService();
 
@@ -72,9 +80,7 @@ export default {
       dataList: [],
       searchParams: {
         pageNum: 1,
-        dataName: "",
-        status: "",
-        projectId: ""
+        entityId: 5
       },
       loading: true,
       operationTpye: "",
@@ -90,7 +96,19 @@ export default {
           console.log(data);
           if (data.code == 2000) {
             this.totalPageData = data.size;
-            this.dataList = data.data;
+            this.dataList = data.data.map(item => {
+              return {
+                id: item.id,
+                name: item.name,
+                regCapi: item.regCapi + '（万元）',
+                foundDate: moment(item.foundDate/1000).format("YYYY-MM-DD"),
+                patentTrend: item.patentTrend,
+                patentType: item.patentType,
+                caseReason: item.caseReason,
+                caseTrend: item.caseTrend,
+                priority: item.priority === '1' ? '低' : item.priority === '2' ? '中' : '高'
+              }
+            });
             this.loading = false;
           } else {
             this.$message.error(data.message);

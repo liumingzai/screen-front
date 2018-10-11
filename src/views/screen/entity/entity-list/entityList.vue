@@ -1,7 +1,7 @@
 <template>
   <div class="data_manage">
     <div class="dtmg_title">
-      <span>载体列表(0)</span>
+      <span>载体列表({{totalPageData}})</span>
 
       <router-link to="/inno/entity/edit">
         <el-button type='primary'>添加载体</el-button>
@@ -17,23 +17,31 @@
       style="width: 100%" 
       v-loading='loading'>
 
-        <el-table-column prop="dataName" label="专利ID" width="">
+        <el-table-column prop="id" label="载体ID" width="">
         </el-table-column>
 
-        <el-table-column prop="dataSourceType" label="专利名称" width="">
-
+        <el-table-column :show-overflow-tooltip="true" prop="name" label="载体名称" width="">
         </el-table-column>
 
-        <el-table-column prop="projectName" label="申请人" width="">
+        <el-table-column :show-overflow-tooltip="true"  prop="logo" label="logo" width="">
         </el-table-column>
 
-        <el-table-column prop="apiUrl" label="申请日期" width="">
+        <el-table-column :show-overflow-tooltip="true"  prop="address" label="地址" width="">
         </el-table-column>
 
-        <el-table-column prop="createTime" label="领域ID" width="">
+        <el-table-column prop="investCount" label="指标投资" width="">
         </el-table-column>
 
-        <el-table-column prop="userName" label="上传人" width="">
+        <el-table-column prop="area" label="指标面积" width="">
+        </el-table-column>
+
+        <el-table-column prop="entCount" label="入驻企业" width="">
+        </el-table-column>
+
+        <el-table-column prop="personCount" label="办公人数" width="">
+        </el-table-column>
+
+        <el-table-column :show-overflow-tooltip="true" prop="mainIndustry" label="主导产业" width="">
         </el-table-column>
 
         <el-table-column label="操作" width="">
@@ -71,10 +79,7 @@ export default {
       totalPageData: null,
       dataList: [],
       searchParams: {
-        pageNum: 1,
-        dataName: "",
-        status: "",
-        projectId: ""
+        pageNum: 1
       },
       loading: true,
       operationTpye: "",
@@ -90,7 +95,19 @@ export default {
           console.log(data);
           if (data.code == 2000) {
             this.totalPageData = data.size;
-            this.dataList = data.data;
+            this.dataList = data.data.map(item => {
+              return {
+                id: item.id,
+                name: item.name,
+                logo: item.logo,
+                address: item.address,
+                investCount: item.investCount,
+                area: item.area + '平方公里',
+                entCount: item.entCount + '家',
+                personCount: item.personCount,
+                mainIndustry: item.mainIndustry
+              }
+            });
             this.loading = false;
           } else {
             this.$message.error(data.message);
