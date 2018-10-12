@@ -78,7 +78,7 @@ var _EntityService = new EntityService();
               area: this.entityForm.area,
               entCount: this.entityForm.entCount,
               personCount: this.entityForm.personCount,
-              mainIndustry: this.entityForm.mainIndustry !== '' ? JSON.parse(this.entityForm.mainIndustry) : {}
+              mainIndustry: this.entityForm.mainIndustry !== '' ? JSON.parse(this.entityForm.mainIndustry) : "[]"
             }
             _EntityService.addEntityData(params).then(data => {
               if (data.code == 2000) {

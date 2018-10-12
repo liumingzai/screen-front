@@ -8,7 +8,7 @@
     </div>
 
     <div style="margin-top:20px;">
-      <el-form :model="patentForm" :rules="rules" ref="patentForm" label-width="100px" class="demo-roleForm">
+      <el-form :model="patentForm" :rules="rules" ref="patentForm" label-width="100px" class="demo-patentForm">
         <el-form-item label="专利名称" prop="name">
           <el-input v-model="patentForm.name"></el-input>
         </el-form-item>

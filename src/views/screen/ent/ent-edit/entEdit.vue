@@ -8,7 +8,7 @@
     </div>
 
     <div style="margin-top:20px;">
-      <el-form :model="entForm" :rules="rules" ref="entForm" label-width="100px" class="demo-roleForm">
+      <el-form :model="entForm" :rules="rules" ref="entForm" label-width="100px" class="demo-entForm">
         <el-form-item label="企业名称" prop="name">
           <el-input v-model="entForm.name"></el-input>
         </el-form-item>
@@ -43,7 +43,7 @@
           <el-input v-model="entForm.entity"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitEntForm('entForm')">保存</el-button>
+          <el-button type="primary" @click="submitForm('entForm')">保存</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -57,7 +57,7 @@ var _EntService = new EntService();
   export default {
     data() {
       return {
-        dataId: null,
+        dataId:null,
         entForm: {
           name: '',
           regCapi: '',
@@ -71,31 +71,27 @@ var _EntService = new EntService();
         },
         rules: {
           name: [
-            { required: true, message: '请输入企业名称', trigger: 'blur' },
-          ],
-          entity: [
-            { required: true, message: '请填写载体信息', trigger: 'blur' }
+            { required: true, message: '请输入企业名称', trigger: 'blur' }
           ]
         }
       };
     },
     methods: {
-      submitEntForm(formName) {
+      submitForm(formName) {
         this.$refs[formName].validate((valid) => {
-          debugger;
           if (valid) {
             // 针对field的json处理
             let params = {
               name: this.entForm.name,
               regCapi: this.entForm.regCapi,
               foundDate: this.entForm.foundDate,
-              patentTrend: this.entForm.patentTrend !== '' ? JSON.parse(entForm.patentTrend) : {},
-              patentType: this.entForm.patentType !== '' ? JSON.parse(entForm.patentType) : {},
-              caseReason: this.entForm.caseReason !== '' ? JSON.parse(entForm.caseReason) : {},
-              caseTrend: this.entForm.caseTrend !== '' ? JSON.parse(entForm.caseTrend) : {},
+              patentTrend: this.entForm.patentTrend !== '' ? JSON.parse(entForm.patentTrend) : "[]",
+              patentType: this.entForm.patentType !== '' ? JSON.parse(entForm.patentType) : "{}",
+              caseReason: this.entForm.caseReason !== '' ? JSON.parse(entForm.caseReason) : "{}",
+              caseTrend: this.entForm.caseTrend !== '' ? JSON.parse(entForm.caseTrend) : "{}",
               priority: this.entForm.priority,
               entity: this.entForm.entity !== '' ? JSON.parse(entForm.entity) : {}
-            };
+            }
             _EntService.addEntData(params).then(data => {
               if (data.code == 2000) {
                 this.$message.success('添加数据成功');
@@ -103,9 +99,6 @@ var _EntService = new EntService();
                 return false;
               }
             });
-          } else {
-            console.log('error submit!!');
-            return false;
           }
         });
       },
@@ -115,10 +108,10 @@ var _EntService = new EntService();
           name: this.entForm.name,
           regCapi: this.entForm.regCapi,
           foundDate: this.entForm.foundDate,
-          patentTrend: this.entForm.patentTrend !== '' ? JSON.parse(entForm.patentTrend) : {},
-          patentType: this.entForm.patentType !== '' ? JSON.parse(entForm.patentType) : {},
-          caseReason: this.entForm.caseReason !== '' ? JSON.parse(entForm.caseReason) : {},
-          caseTrend: this.entForm.caseTrend !== '' ? JSON.parse(entForm.caseTrend) : {},
+          patentTrend: this.entForm.patentTrend !== '' ? entForm.patentTrend : "{}",
+          patentType: this.entForm.patentType !== '' ? entForm.patentType : "{}",
+          caseReason: this.entForm.caseReason !== '' ? entForm.caseReason : "{}",
+          caseTrend: this.entForm.caseTrend !== '' ? entForm.caseTrend : "{}",
           priority: this.entForm.priority,
           entity: this.entForm.entity !== '' ? JSON.parse(entForm.entity) : {}
         }
@@ -126,7 +119,7 @@ var _EntService = new EntService();
           console.log(data)
           if(data.code==2000){
             this.$message.success('更改数据成功')
-            this.$router.push({name:'entList'})
+            this.$router.push({name:'patentList'})
           }else{
             this.$message.error(data.message)
           }
@@ -140,8 +133,9 @@ var _EntService = new EntService();
       this.dataId = this.$route.params.id;
       if (this.dataId) {
         _EntService.getEntDataById(this.dataId).then((data) => {
+          console.log(data)
           if(data.code==2000){
-            this.entForm.entId = data.data.entId;
+          this.entForm.entId = data.data.entId;
             this.entForm.name = data.data.name;
             this.entForm.regCapi = data.data.regCapi;
             this.entForm.foundDate = data.data.foundDate;
@@ -155,8 +149,8 @@ var _EntService = new EntService();
             this.$message.error(data.message)
           }
         }).catch((err) => {
-          console.log(err)
-          this.$message.error('网络错误')
+            console.log(err)
+            this.$message.error('网络错误')
         });
       }
     }
