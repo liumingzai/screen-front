@@ -34,8 +34,8 @@
 </template>
 
 <script>
-import PatentService from "../PatentService";
-var _PatentService = new PatentService();
+import PatentEditService from "./PatentEditService";
+var _PatentEditService = new PatentEditService();
 
   export default {
     data() {
@@ -74,7 +74,7 @@ var _PatentService = new PatentService();
               appDate: this.patentForm.appDate,
               field: this.patentForm.field !== '' ? JSON.parse(this.patentForm.field) : {}
             }
-            _PatentService.addPatentData(params).then(data => {
+            _PatentEditService.addPatentData(params).then(data => {
               if (data.code == 2000) {
                 this.$message.success('添加数据成功');
               } else {
@@ -92,7 +92,7 @@ var _PatentService = new PatentService();
           appDate: this.patentForm.appDate,
           field: this.patentForm.field !== '' ? JSON.parse(this.patentForm.field) : {}
         }
-        _PatentService.updatePatentData(params).then(data=>{
+        _PatentEditService.updatePatentData(params).then(data=>{
           console.log(data)
           if(data.code==2000){
             this.$message.success('更改数据成功')
@@ -109,7 +109,7 @@ var _PatentService = new PatentService();
     created(){
       this.dataId = this.$route.params.id;
       if (this.dataId) {
-        _PatentService.getPatentDataById(this.dataId).then((data) => {
+        _PatentEditService.getPatentDataById(this.dataId).then((data) => {
           console.log(data)
           if(data.code==2000){
             this.patentForm.patentId = data.data.patentId,

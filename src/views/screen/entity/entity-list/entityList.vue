@@ -69,8 +69,8 @@
 </template>
 
 <script>
-import EntityService from "../EntityService";
-var _EntityService = new EntityService();
+import EntityListService from "./EntityListService";
+var _EntityListService = new EntityListService();
 
 export default {
   name: "dataManage",
@@ -89,7 +89,7 @@ export default {
   methods: {
     //加载数据列表
     getDataList() {
-      _EntityService
+      _EntityListService
         .getDataList(this.searchParams)
         .then(data => {
           console.log(data);
@@ -135,7 +135,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          _EntityService
+          _EntityListService
             .deleteData(row.id)
             .then(data => {
               console.log(data);

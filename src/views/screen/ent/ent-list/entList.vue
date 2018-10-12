@@ -69,8 +69,8 @@
 
 <script>
 import moment from "moment";
-import EntService from "../EntService";
-var _EntService = new EntService();
+import EntListService from "./EntListService";
+var _EntListService = new EntListService();
 
 export default {
   name: "entList",
@@ -90,7 +90,7 @@ export default {
   methods: {
     //加载数据列表
     getDataList() {
-      _EntService
+      _EntListService
         .getDataList(this.searchParams)
         .then(data => {
           console.log(data);
@@ -136,7 +136,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          _EntService
+          _EntListService
             .deleteData(row.id)
             .then(data => {
               console.log(data);

@@ -58,8 +58,8 @@
 
 <script>
 import moment from "moment";
-import PatentService from "../PatentService";
-var _PatentService = new PatentService();
+import PatentListService from "./PatentListService";
+var _PatentListService = new PatentListService();
 
 export default {
   name: "patentList",
@@ -79,7 +79,7 @@ export default {
   methods: {
     //加载数据列表
     getDataList() {
-      _PatentService
+      _PatentListService
         .getDataList(this.searchParams)
         .then(data => {
           if (data.code == 2000) {
@@ -120,7 +120,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          _PatentService
+          _PatentListService
             .deletePatentData(row.id)
             .then(data => {
               console.log(data);

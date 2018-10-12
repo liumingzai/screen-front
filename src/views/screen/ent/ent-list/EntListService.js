@@ -1,6 +1,6 @@
 import Http from "@/http";
 
-class EntService {
+class EntListService {
   constructor() {
     this.http = new Http();
   }
@@ -37,4 +37,4 @@ class EntService {
 
 }
 
-export default EntService;
+export default EntListService;

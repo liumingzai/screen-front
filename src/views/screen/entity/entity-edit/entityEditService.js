@@ -1,42 +1,41 @@
 import Http from "@/http";
 
-class FieldService {
+class EntityEditService {
   constructor() {
     this.http = new Http();
   }
 
   //获取数据列表
   getDataList(params){
-    const method = 'innoField/getFields'
+    const method = 'innoEntity/getEntitys'
     return this.http.GET(method,params)  
 
   }
 
   //添加创新载体专利数据
-  addFieldData(params){
-    const method = 'innoField/addField'
+  addEntityData(params){
+    const method = 'innoEntity/addEntity'
     return this.http.POST(method,params)  
 
   }
 
   //获取ID对应数据信息
-  getFieldDataById(id){
-    const method = 'innoField/getFields'
-    return this.http.GET(method,{fieldId :id})  
+  getEntityDataById(id){
+    const method = 'innoEntity/getEntitys'
+    return this.http.GET(method,{entityId :id})  
   }
 
   //更新数据
-  updateFieldData(params){
-    const method = 'innoField/updateField'
+  updateEntityData(params){
+    const method = 'innoEntity/updateEntity'
     return this.http.POST(method,params)
   }
 
   //删除数据
-  deleteFieldData(id){
-    const method = 'innoField/deleteField'
+  deleteEntityData(id){
+    const method = 'innoEntity/deleteEntity'
     return this.http.DELETE(method,{patentId:id}) 
   }
 }
 
-
-export default FieldService;
+export default EntityEditService;

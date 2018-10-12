@@ -41,8 +41,8 @@
 </template>
 
 <script>
-import FieldService from "../FieldService";
-var _FieldService = new FieldService();
+import FieldEditService from "./FieldEditService";
+var _FieldEditService = new FieldEditService();
 
   export default {
     data() {
@@ -86,7 +86,7 @@ var _FieldService = new FieldService();
               // patentProvince: this.fieldForm.patentProvince !== '' ? JSON.parse(this.fieldForm.patentProvince) : {},
               // patentTypeProvince: this.fieldForm.patentTypeProvince !== '' ? JSON.parse(this.fieldForm.patentTypeProvince) : {}
             }
-            _FieldService.addFieldData(params).then(data => {
+            _FieldEditService.addFieldData(params).then(data => {
               if (data.code == 2000) {
                 this.$message.success('添加数据成功');
               } else {
@@ -108,7 +108,7 @@ var _FieldService = new FieldService();
           patentProvince: this.fieldForm.patentProvince,
           patentTypeProvince: this.fieldForm.patentTypeProvince
         }
-        _FieldService.updateFieldData(params).then(data=>{
+        _FieldEditService.updateFieldData(params).then(data=>{
           console.log(data)
           if(data.code==2000){
             this.$message.success('更改数据成功')
@@ -125,7 +125,7 @@ var _FieldService = new FieldService();
     created(){
       this.dataId = this.$route.params.id;
       if (this.dataId) {
-        _FieldService.getFieldDataById(this.dataId).then((data) => {
+        _FieldEditService.getFieldDataById(this.dataId).then((data) => {
           if(data.code==2000){
             this.fieldForm.fieldId = data.data.fieldId;
             this.fieldForm.name = data.data.name;

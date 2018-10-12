@@ -41,8 +41,8 @@
 </template>
 
 <script>
-import EntityService from "../EntityService";
-var _EntityService = new EntityService();
+import EntityEditService from "./EntityEditService";
+var _EntityEditService = new EntityEditService();
 
   export default {
     data() {
@@ -80,7 +80,7 @@ var _EntityService = new EntityService();
               personCount: this.entityForm.personCount,
               mainIndustry: this.entityForm.mainIndustry !== '' ? JSON.parse(this.entityForm.mainIndustry) : "[]"
             }
-            _EntityService.addEntityData(params).then(data => {
+            _EntityEditService.addEntityData(params).then(data => {
               if (data.code == 2000) {
                 this.$message.success('添加数据成功');
               } else {
@@ -102,7 +102,7 @@ var _EntityService = new EntityService();
           personCount: this.entityForm.personCount,
           mainIndustry: this.entityForm.mainIndustry !== '' ? JSON.parse(this.entityForm.mainIndustry) : "[]"
         }
-        _EntityService.updateEntityData(params).then(data=>{
+        _EntityEditService.updateEntityData(params).then(data=>{
           console.log(data)
           if(data.code==2000){
             this.$message.success('更改数据成功')
@@ -119,7 +119,7 @@ var _EntityService = new EntityService();
     created(){
       this.dataId = this.$route.params.id;
       if (this.dataId) {
-        _EntityService.getEntityDataById(this.dataId).then((data) => {
+        _EntityEditService.getEntityDataById(this.dataId).then((data) => {
           console.log(data)
           if(data.code==2000){
           this.entityForm.entityId = data.data.entityId

@@ -51,8 +51,8 @@
 </template>
 
 <script>
-import EntService from "../EntService";
-var _EntService = new EntService();
+import EntEditService from "./EntEditService";
+var _EntEditService = new EntEditService();
 
   export default {
     data() {
@@ -92,7 +92,7 @@ var _EntService = new EntService();
               priority: this.entForm.priority,
               entity: this.entForm.entity !== '' ? JSON.parse(entForm.entity) : {}
             }
-            _EntService.addEntData(params).then(data => {
+            _EntEditService.addEntData(params).then(data => {
               if (data.code == 2000) {
                 this.$message.success('添加数据成功');
               } else {
@@ -115,7 +115,7 @@ var _EntService = new EntService();
           priority: this.entForm.priority,
           entity: this.entForm.entity !== '' ? JSON.parse(entForm.entity) : {}
         }
-        _EntService.updateEntData(params).then(data=>{
+        _EntEditService.updateEntData(params).then(data=>{
           console.log(data)
           if(data.code==2000){
             this.$message.success('更改数据成功')
@@ -132,7 +132,7 @@ var _EntService = new EntService();
     created(){
       this.dataId = this.$route.params.id;
       if (this.dataId) {
-        _EntService.getEntDataById(this.dataId).then((data) => {
+        _EntEditService.getEntDataById(this.dataId).then((data) => {
           console.log(data)
           if(data.code==2000){
           this.entForm.entId = data.data.entId;

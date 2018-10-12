@@ -1,6 +1,6 @@
 import Http from "@/http";
 
-class PatentService {
+class PatentEditService {
   constructor() {
     this.http = new Http();
   }
@@ -38,4 +38,4 @@ class PatentService {
   }
 }
 
-export default PatentService;
+  export default PatentEditService;

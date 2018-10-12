@@ -63,8 +63,8 @@
 </template>
 
 <script>
-import FieldService from "../FieldService";
-var _FieldService = new FieldService();
+import FieldListService from "./FieldListService";
+var _FieldListService = new FieldListService();
 
 export default {
   name: "fieldList",
@@ -83,7 +83,7 @@ export default {
   methods: {
     //加载数据列表
     getDataList() {
-      _FieldService
+      _FieldListService
         .getDataList(this.searchParams)
         .then(data => {
           console.log(data);
@@ -112,7 +112,7 @@ export default {
     //更新数据状态
     handleUpdateState(row) {
       console.log(row);
-      _FieldService
+      _FieldListService
         .updateDataState(row.id, row.status)
         .then(data => {
           console.log(data);
@@ -135,7 +135,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          _FieldService
+          _FieldListService
             .deleteData(row.id)
             .then(data => {
               console.log(data);
