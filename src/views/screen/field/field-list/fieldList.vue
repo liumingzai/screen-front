@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import FieldListService from "./FieldListService";
+import FieldListService from "./fieldListService";
 var _FieldListService = new FieldListService();
 
 export default {

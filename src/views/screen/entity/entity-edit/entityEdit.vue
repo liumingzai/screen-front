@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import EntityEditService from "./EntityEditService";
+import EntityEditService from "./entityEditService";
 var _EntityEditService = new EntityEditService();
 
   export default {

@@ -58,7 +58,7 @@
 
 <script>
 import moment from "moment";
-import PatentListService from "./PatentListService";
+import PatentListService from "./patentListService";
 var _PatentListService = new PatentListService();
 
 export default {

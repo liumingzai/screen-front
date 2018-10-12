@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import EntEditService from "./EntEditService";
+import EntEditService from "./entEditService";
 var _EntEditService = new EntEditService();
 
   export default {

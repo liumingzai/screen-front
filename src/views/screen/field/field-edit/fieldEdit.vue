@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import FieldEditService from "./FieldEditService";
+import FieldEditService from "./fieldEditService";
 var _FieldEditService = new FieldEditService();
 
   export default {

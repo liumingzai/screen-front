@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import PatentEditService from "./PatentEditService";
+import PatentEditService from "./patentEditService";
 var _PatentEditService = new PatentEditService();
 
   export default {

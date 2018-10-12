@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import EntityListService from "./EntityListService";
+import EntityListService from "./entityListService";
 var _EntityListService = new EntityListService();
 
 export default {
