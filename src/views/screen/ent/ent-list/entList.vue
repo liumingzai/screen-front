@@ -73,7 +73,7 @@ import EntService from "../EntService";
 var _EntService = new EntService();
 
 export default {
-  name: "dataManage",
+  name: "entList",
   data() {
     return {
       totalPageData: null,

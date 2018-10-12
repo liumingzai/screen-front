@@ -21,8 +21,8 @@ class PatentService {
 
   //获取ID对应数据信息
   getPatentDataById(id){
-    const method = 'innoPatent/getPatents'
-    return this.http.GET(method,{patentId :id, fieldId: 1})  
+    const method = 'innoPatent/getPatentById'
+    return this.http.GET(method,{patentId :id})  
   }
 
   //更新数据

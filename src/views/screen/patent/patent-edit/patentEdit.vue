@@ -36,6 +36,7 @@
 <script>
 import PatentService from "../PatentService";
 var _PatentService = new PatentService();
+
   export default {
     data() {
       return {
@@ -57,7 +58,7 @@ var _PatentService = new PatentService();
             { type: 'date', required: true, message: '请选择申请日期', trigger: 'change' }
           ],
           field: [
-            { required: true, message: '请选择领域', trigger: 'change' }
+            { required: true, message: '请选择领域', trigger: 'blur' }
           ]
         }
       };
@@ -75,7 +76,7 @@ var _PatentService = new PatentService();
             }
             _PatentService.addPatentData(params).then(data => {
               if (data.code == 2000) {
-                console.log(data);
+                this.$message.success('添加数据成功');
               } else {
                 return false;
               }
@@ -83,10 +84,7 @@ var _PatentService = new PatentService();
           }
         });
       },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      },
-       updateData(){
+      updateData(){
         let params = {
           patentId: this.patentForm.patentId,
           name: this.patentForm.name,
@@ -109,7 +107,8 @@ var _PatentService = new PatentService();
       }
     },
     created(){
-        this.dataId = this.$route.params.id;
+      this.dataId = this.$route.params.id;
+      if (this.dataId) {
         _PatentService.getPatentDataById(this.dataId).then((data) => {
           console.log(data)
           if(data.code==2000){
@@ -121,10 +120,11 @@ var _PatentService = new PatentService();
           }else{
             this.$message.error(data.message)
           }
-      }).catch((err) => {
-          console.log(err)
-          this.$message.error('网络错误')
-      });
+        }).catch((err) => {
+            console.log(err)
+            this.$message.error('网络错误')
+        });
+      }
     }
   };
 </script>

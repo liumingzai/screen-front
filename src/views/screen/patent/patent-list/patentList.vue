@@ -20,7 +20,7 @@
         <el-table-column prop="id" label="专利ID" width="">
         </el-table-column>
 
-        <el-table-column prop="name" label="专利名称" width="">
+        <el-table-column :show-overflow-tooltip="true" prop="name" label="专利名称" width="">
 
         </el-table-column>
 
@@ -35,7 +35,6 @@
 
         <el-table-column label="操作" width="">
           <template slot-scope="scope">
-
             <el-button type="text" size="small" @click="handleEdit(scope.row)">编辑</el-button>
             <el-button type='text' size='small' @click="handleDelete(scope.row)">删除</el-button>
           </template>
@@ -83,7 +82,6 @@ export default {
       _PatentService
         .getDataList(this.searchParams)
         .then(data => {
-          console.log(data);
           if (data.code == 2000) {
             this.totalPageData = data.size;
             this.dataList = data.data.map(_patent => {

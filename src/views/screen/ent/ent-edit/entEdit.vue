@@ -7,115 +7,158 @@
       </el-breadcrumb>
     </div>
 
-    <div>
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="活动名称" prop="name">
-          <el-input v-model="ruleForm.name"></el-input>
+    <div style="margin-top:20px;">
+      <el-form :model="entForm" :rules="rules" ref="entForm" label-width="100px" class="demo-roleForm">
+        <el-form-item label="企业名称" prop="name">
+          <el-input v-model="entForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="活动区域" prop="region">
-          <el-select v-model="ruleForm.region" placeholder="请选择活动区域">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
+        <el-form-item label="注册资本" prop="regCapi">
+          <el-input v-model="entForm.regCapi"></el-input>
         </el-form-item>
-        <el-form-item label="活动时间" required>
-          <el-col :span="11">
-            <el-form-item prop="date1">
-              <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
-            </el-form-item>
-          </el-col>
-          <el-col class="line" :span="2">-</el-col>
-          <el-col :span="11">
-            <el-form-item prop="date2">
-              <el-time-picker type="fixed-time" placeholder="选择时间" v-model="ruleForm.date2" style="width: 100%;"></el-time-picker>
-            </el-form-item>
-          </el-col>
+        <el-form-item label="成立时间">
+          <el-form-item prop="foundDate">
+            <el-date-picker type="date" placeholder="选择日期" v-model="entForm.foundDate" style="width: 100%;"></el-date-picker>
+          </el-form-item>
         </el-form-item>
-        <el-form-item label="即时配送" prop="delivery">
-          <el-switch v-model="ruleForm.delivery"></el-switch>
+          <el-form-item label="专利趋势" prop="patntTrend">
+          <el-input v-model="entForm.patntTrend"></el-input>
         </el-form-item>
-        <el-form-item label="活动性质" prop="type">
-          <el-checkbox-group v-model="ruleForm.type">
-            <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-            <el-checkbox label="地推活动" name="type"></el-checkbox>
-            <el-checkbox label="线下主题活动" name="type"></el-checkbox>
-            <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-          </el-checkbox-group>
+          <el-form-item label="专利类型" prop="patntType">
+          <el-input v-model="entForm.patntType"></el-input>
         </el-form-item>
-        <el-form-item label="特殊资源" prop="resource">
-          <el-radio-group v-model="ruleForm.resource">
-            <el-radio label="线上品牌商赞助"></el-radio>
-            <el-radio label="线下场地免费"></el-radio>
-          </el-radio-group>
+          <el-form-item label="涉诉案由" prop="caseReason">
+          <el-input v-model="entForm.caseReason"></el-input>
         </el-form-item>
-        <el-form-item label="活动形式" prop="desc">
-          <el-input type="textarea" v-model="ruleForm.desc"></el-input>
+          <el-form-item label="涉诉趋势" prop="caseTrend">
+          <el-input v-model="entForm.caseTrend"></el-input>
+        </el-form-item>
+        <el-form-item label="优先级" prop="priority">
+        <el-select v-model="entForm.priority" placeholder="请选择数据优先级">
+          <el-option label="低" value="1"></el-option>
+          <el-option label="中" value="2"></el-option>
+          <el-option label="高" value="3"></el-option>
+        </el-select>
+        </el-form-item>
+        <el-form-item label="载体信息" prop="entity">
+          <el-input v-model="entForm.entity"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-          <el-button @click="resetForm('ruleForm')">重置</el-button>
+          <el-button type="primary" @click="submitEntForm('entForm')">保存</el-button>
         </el-form-item>
       </el-form>
     </div>
-
   </div>
-
 </template>
 
 <script>
+import EntService from "../EntService";
+var _EntService = new EntService();
+
   export default {
     data() {
       return {
-        ruleForm: {
+        dataId: null,
+        entForm: {
           name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
+          regCapi: '',
+          foundDate: '',
+          patentTrend: '',
+          patentType: '',
+          caseReason: '',
+          caseTrend: '',
+          priority: '',
+          entity: ''
         },
         rules: {
           name: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+            { required: true, message: '请输入企业名称', trigger: 'blur' },
           ],
-          region: [
-            { required: true, message: '请选择活动区域', trigger: 'change' }
-          ],
-          date1: [
-            { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
-          ],
-          date2: [
-            { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
-          ],
-          type: [
-            { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
-          ],
-          resource: [
-            { required: true, message: '请选择活动资源', trigger: 'change' }
-          ],
-          desc: [
-            { required: true, message: '请填写活动形式', trigger: 'blur' }
+          entity: [
+            { required: true, message: '请填写载体信息', trigger: 'blur' }
           ]
         }
       };
     },
     methods: {
-      submitForm(formName) {
+      submitEntForm(formName) {
         this.$refs[formName].validate((valid) => {
+          debugger;
           if (valid) {
-            alert('submit!');
+            // 针对field的json处理
+            let params = {
+              name: this.entForm.name,
+              regCapi: this.entForm.regCapi,
+              foundDate: this.entForm.foundDate,
+              patentTrend: this.entForm.patentTrend !== '' ? JSON.parse(entForm.patentTrend) : {},
+              patentType: this.entForm.patentType !== '' ? JSON.parse(entForm.patentType) : {},
+              caseReason: this.entForm.caseReason !== '' ? JSON.parse(entForm.caseReason) : {},
+              caseTrend: this.entForm.caseTrend !== '' ? JSON.parse(entForm.caseTrend) : {},
+              priority: this.entForm.priority,
+              entity: this.entForm.entity !== '' ? JSON.parse(entForm.entity) : {}
+            };
+            _EntService.addEntData(params).then(data => {
+              if (data.code == 2000) {
+                this.$message.success('添加数据成功');
+              } else {
+                return false;
+              }
+            });
           } else {
             console.log('error submit!!');
             return false;
           }
         });
       },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
+      updateData(){
+        let params = {
+          entId: this.entForm.entId,
+          name: this.entForm.name,
+          regCapi: this.entForm.regCapi,
+          foundDate: this.entForm.foundDate,
+          patentTrend: this.entForm.patentTrend !== '' ? JSON.parse(entForm.patentTrend) : {},
+          patentType: this.entForm.patentType !== '' ? JSON.parse(entForm.patentType) : {},
+          caseReason: this.entForm.caseReason !== '' ? JSON.parse(entForm.caseReason) : {},
+          caseTrend: this.entForm.caseTrend !== '' ? JSON.parse(entForm.caseTrend) : {},
+          priority: this.entForm.priority,
+          entity: this.entForm.entity !== '' ? JSON.parse(entForm.entity) : {}
+        }
+        _EntService.updateEntData(params).then(data=>{
+          console.log(data)
+          if(data.code==2000){
+            this.$message.success('更改数据成功')
+            this.$router.push({name:'entList'})
+          }else{
+            this.$message.error(data.message)
+          }
+        }).catch(err=>{
+          console.log(err)
+          this.$message.error('网络错误')
+        })  
+      }
+    },
+    created(){
+      this.dataId = this.$route.params.id;
+      if (this.dataId) {
+        _EntService.getEntDataById(this.dataId).then((data) => {
+          if(data.code==2000){
+            this.entForm.entId = data.data.entId;
+            this.entForm.name = data.data.name;
+            this.entForm.regCapi = data.data.regCapi;
+            this.entForm.foundDate = data.data.foundDate;
+            this.entForm.patentTrend = JSON.stringify(data.data.patentTrend);
+            this.entForm.patentType = JSON.stringify(data.data.patentType);
+            this.entForm.caseReason = JSON.stringify(data.data.caseReason);
+            this.entForm.caseTrend = JSON.stringify(data.data.caseTrend);
+            this.entForm.priority = data.data.priority;
+            this.entForm.entity = JSON.stringify(data.data.entity);
+          }else{
+            this.$message.error(data.message)
+          }
+        }).catch((err) => {
+          console.log(err)
+          this.$message.error('网络错误')
+        });
       }
     }
-  }
+  };
 </script>

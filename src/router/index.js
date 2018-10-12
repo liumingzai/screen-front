@@ -76,7 +76,7 @@ export default new Router({
       children: [
         {
           path:'entity',
-          name:'entity',
+          name:'entityList',
           component:Layout,
           children:[
             {path:'/',name:'entity',component:Entity}, 
@@ -85,7 +85,7 @@ export default new Router({
         },
         {
           path:'ent',
-          name:'ent',
+          name:'entList',
           component:Layout,
           children:[
             {path:'/',name:'ent',component:Ent}, 
@@ -94,7 +94,7 @@ export default new Router({
         },
         {
           path:'field',
-          name:'field',
+          name:'fieldList',
           component:Layout,
           children:[
             {path:'/',name:'field',component:Field}, 
@@ -103,7 +103,7 @@ export default new Router({
         },
         {
           path:'patent',
-          name:'patent',
+          name:'patentList',
           component:Layout,
           children:[
             {path:'/',name:'patent',component:Patent}, 

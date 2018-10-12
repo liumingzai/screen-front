@@ -7,53 +7,31 @@
       </el-breadcrumb>
     </div>
 
-    <div>
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="活动名称" prop="name">
-          <el-input v-model="ruleForm.name"></el-input>
+    <div style="margin-top:20px;">
+      <el-form :model="fieldForm" :rules="rules" ref="fieldForm" label-width="100px" class="demo-fieldForm">
+        <el-form-item label="领域名称" prop="name">
+          <el-input v-model="fieldForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="活动区域" prop="region">
-          <el-select v-model="ruleForm.region" placeholder="请选择活动区域">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
+        <el-form-item label="申请人TOP10" prop="patentOwner">
+          <el-input v-model="fieldForm.patentOwner"></el-input>
         </el-form-item>
-        <el-form-item label="活动时间" required>
-          <el-col :span="11">
-            <el-form-item prop="date1">
-              <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
-            </el-form-item>
-          </el-col>
-          <el-col class="line" :span="2">-</el-col>
-          <el-col :span="11">
-            <el-form-item prop="date2">
-              <el-time-picker type="fixed-time" placeholder="选择时间" v-model="ruleForm.date2" style="width: 100%;"></el-time-picker>
-            </el-form-item>
-          </el-col>
+        <el-form-item label="专利类型分析" prop="patentCateOwner">
+          <el-input v-model="fieldForm.patentCateOwner"></el-input>
         </el-form-item>
-        <el-form-item label="即时配送" prop="delivery">
-          <el-switch v-model="ruleForm.delivery"></el-switch>
+        <el-form-item label="专利类型" prop="patentTypeOwner">
+          <el-input v-model="fieldForm.patentTypeOwner"></el-input>
         </el-form-item>
-        <el-form-item label="活动性质" prop="type">
-          <el-checkbox-group v-model="ruleForm.type">
-            <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-            <el-checkbox label="地推活动" name="type"></el-checkbox>
-            <el-checkbox label="线下主题活动" name="type"></el-checkbox>
-            <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-          </el-checkbox-group>
+        <el-form-item label="专利类型分布" prop="patentType">
+          <el-input v-model="fieldForm.patentType"></el-input>
         </el-form-item>
-        <el-form-item label="特殊资源" prop="resource">
-          <el-radio-group v-model="ruleForm.resource">
-            <el-radio label="线上品牌商赞助"></el-radio>
-            <el-radio label="线下场地免费"></el-radio>
-          </el-radio-group>
+        <el-form-item label="专利区域分布" prop="patentProvince">
+          <el-input v-model="fieldForm.patentProvince"></el-input>
         </el-form-item>
-        <el-form-item label="活动形式" prop="desc">
-          <el-input type="textarea" v-model="ruleForm.desc"></el-input>
+        <el-form-item label="各省专利" prop="patentTypeProvince">
+          <el-input v-model="fieldForm.patentTypeProvince"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-          <el-button @click="resetForm('ruleForm')">重置</el-button>
+          <el-button type="primary" @click="submitForm('fieldForm')">立即创建</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -63,41 +41,26 @@
 </template>
 
 <script>
+import FieldService from "../FieldService";
+var _FieldService = new FieldService();
+
   export default {
     data() {
       return {
-        ruleForm: {
+        dataId:null,
+        fieldForm: {
           name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
+          logo: '',
+          patentOwner: '',
+          patentCateOwner: '',
+          patentTypeOwner: '',
+          patentType: '',
+          patentProvince: '',
+          patentTypeProvince: ''
         },
         rules: {
           name: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          region: [
-            { required: true, message: '请选择活动区域', trigger: 'change' }
-          ],
-          date1: [
-            { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
-          ],
-          date2: [
-            { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
-          ],
-          type: [
-            { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
-          ],
-          resource: [
-            { required: true, message: '请选择活动资源', trigger: 'change' }
-          ],
-          desc: [
-            { required: true, message: '请填写活动形式', trigger: 'blur' }
+            { required: true, message: '请输入领域名称', trigger: 'blur' }
           ]
         }
       };
@@ -106,16 +69,81 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
+            // 针对field的json处理
+            let params = {
+              name: this.fieldForm.name,
+              logo: this.fieldForm.logo,
+              patentOwner: this.fieldForm.patentOwner,
+              patentCateOwner: this.fieldForm.patentCateOwner,
+              patentTypeOwner: this.fieldForm.patentTypeOwner,
+              patentType: this.fieldForm.patentType,
+              patentProvince: this.fieldForm.patentProvince,
+              patentTypeProvince: this.fieldForm.patentTypeProvince
+              // patentOwner: this.fieldForm.patentOwner !== '' ? JSON.parse(this.fieldForm.patentOwner) : {},
+              // patentCateOwner: this.fieldForm.patentCateOwner !== '' ? JSON.parse(this.fieldForm.patentCateOwner) : {},
+              // patentTypeOwner: this.fieldForm.patentTypeOwner !== '' ? JSON.parse(this.fieldForm.patentTypeOwner) : {},
+              // patentType: this.fieldForm.patentType !== '' ? JSON.parse(this.fieldForm.patentType) : {},
+              // patentProvince: this.fieldForm.patentProvince !== '' ? JSON.parse(this.fieldForm.patentProvince) : {},
+              // patentTypeProvince: this.fieldForm.patentTypeProvince !== '' ? JSON.parse(this.fieldForm.patentTypeProvince) : {}
+            }
+            _FieldService.addFieldData(params).then(data => {
+              if (data.code == 2000) {
+                this.$message.success('添加数据成功');
+              } else {
+                return false;
+              }
+            });
           }
         });
       },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
+      updateData(){
+        let params = {
+          fieldId: this.fieldForm.fieldId,
+          name: this.fieldForm.name,
+          logo: this.fieldForm.logo,
+          patentOwner: this.fieldForm.patentOwner,
+          patentCateOwner: this.fieldForm.patentCateOwner,
+          patentTypeOwner: this.fieldForm.patentTypeOwner,
+          patentType: this.fieldForm.patentType,
+          patentProvince: this.fieldForm.patentProvince,
+          patentTypeProvince: this.fieldForm.patentTypeProvince
+        }
+        _FieldService.updateFieldData(params).then(data=>{
+          console.log(data)
+          if(data.code==2000){
+            this.$message.success('更改数据成功')
+            this.$router.push({name:'patentList'})
+          }else{
+            this.$message.error(data.message)
+          }
+        }).catch(err=>{
+          console.log(err)
+          this.$message.error('网络错误')
+        })  
+      }
+    },
+    created(){
+      this.dataId = this.$route.params.id;
+      if (this.dataId) {
+        _FieldService.getFieldDataById(this.dataId).then((data) => {
+          if(data.code==2000){
+            this.fieldForm.fieldId = data.data.fieldId;
+            this.fieldForm.name = data.data.name;
+            this.fieldForm.logo = data.data.logo;
+            this.fieldForm.patentOwner = JSON.stringify(data.data.patentOwner);
+            this.fieldForm.patentCateOwner = JSON.stringify(data.data.patentCateOwner);
+            this.fieldForm.patentTypeOwner = JSON.stringify(data.data.patentTypeOwner);
+            this.fieldForm.patentType = JSON.stringify(data.data.patentType);
+            this.fieldForm.patentProvince = JSON.stringify(data.data.patentProvince);
+            this.fieldForm.patentTypeProvince = JSON.stringify(data.data.patentTypeProvince);    
+          }else{
+            this.$message.error(data.message)
+          }
+        }).catch((err) => {
+            console.log(err)
+            this.$message.error('网络错误')
+        });
       }
     }
-  }
+  };
 </script>
