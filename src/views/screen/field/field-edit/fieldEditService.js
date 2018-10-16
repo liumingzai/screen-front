@@ -5,13 +5,6 @@ class FieldEditService {
     this.http = new Http();
   }
 
-  //获取数据列表
-  getDataList(params){
-    const method = 'innoField/getFields'
-    return this.http.GET(method,params)  
-
-  }
-
   //添加创新载体专利数据
   addFieldData(params){
     const method = 'innoField/addField'
@@ -29,12 +22,6 @@ class FieldEditService {
   updateFieldData(params){
     const method = 'innoField/updateField'
     return this.http.POST(method,params)
-  }
-
-  //删除数据
-  deleteFieldData(id){
-    const method = 'innoField/deleteField'
-    return this.http.DELETE(method,{patentId:id}) 
   }
 }
 

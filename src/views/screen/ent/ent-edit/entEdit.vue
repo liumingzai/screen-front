@@ -20,11 +20,11 @@
             <el-date-picker type="date" placeholder="选择日期" v-model="entForm.foundDate" style="width: 100%;"></el-date-picker>
           </el-form-item>
         </el-form-item>
-          <el-form-item label="专利趋势" prop="patntTrend">
-          <el-input v-model="entForm.patntTrend"></el-input>
+          <el-form-item label="专利趋势" prop="patentTrend">
+          <el-input v-model="entForm.patentTrend"></el-input>
         </el-form-item>
-          <el-form-item label="专利类型" prop="patntType">
-          <el-input v-model="entForm.patntType"></el-input>
+          <el-form-item label="专利类型" prop="patentType">
+          <el-input v-model="entForm.patentType"></el-input>
         </el-form-item>
           <el-form-item label="涉诉案由" prop="caseReason">
           <el-input v-model="entForm.caseReason"></el-input>
@@ -85,7 +85,7 @@ var _EntEditService = new EntEditService();
               name: this.entForm.name,
               regCapi: this.entForm.regCapi,
               foundDate: this.entForm.foundDate,
-              patentTrend: this.entForm.patentTrend !== '' ? JSON.parse(entForm.patentTrend) : "[]",
+              patentTrend: this.entForm.patentTrend !== '' ? entForm.patentTrend : "[]",
               patentType: this.entForm.patentType !== '' ? JSON.parse(entForm.patentType) : "{}",
               caseReason: this.entForm.caseReason !== '' ? JSON.parse(entForm.caseReason) : "{}",
               caseTrend: this.entForm.caseTrend !== '' ? JSON.parse(entForm.caseTrend) : "{}",
@@ -95,6 +95,7 @@ var _EntEditService = new EntEditService();
             _EntEditService.addEntData(params).then(data => {
               if (data.code == 2000) {
                 this.$message.success('添加数据成功');
+                this.$router.push({name:'ent'});
               } else {
                 return false;
               }
@@ -108,7 +109,7 @@ var _EntEditService = new EntEditService();
           name: this.entForm.name,
           regCapi: this.entForm.regCapi,
           foundDate: this.entForm.foundDate,
-          patentTrend: this.entForm.patentTrend !== '' ? entForm.patentTrend : "{}",
+          patentTrend: this.entForm.patentTrend !== '' ? entForm.patentTrend : "[]",
           patentType: this.entForm.patentType !== '' ? entForm.patentType : "{}",
           caseReason: this.entForm.caseReason !== '' ? entForm.caseReason : "{}",
           caseTrend: this.entForm.caseTrend !== '' ? entForm.caseTrend : "{}",
@@ -118,8 +119,8 @@ var _EntEditService = new EntEditService();
         _EntEditService.updateEntData(params).then(data=>{
           console.log(data)
           if(data.code==2000){
-            this.$message.success('更改数据成功')
-            this.$router.push({name:'patentList'})
+            this.$message.success('更改数据成功');
+            this.$router.push({name:'ent'}).next();
           }else{
             this.$message.error(data.message)
           }
@@ -139,10 +140,10 @@ var _EntEditService = new EntEditService();
             this.entForm.name = data.data.name;
             this.entForm.regCapi = data.data.regCapi;
             this.entForm.foundDate = data.data.foundDate;
-            this.entForm.patentTrend = JSON.stringify(data.data.patentTrend);
-            this.entForm.patentType = JSON.stringify(data.data.patentType);
-            this.entForm.caseReason = JSON.stringify(data.data.caseReason);
-            this.entForm.caseTrend = JSON.stringify(data.data.caseTrend);
+            this.entForm.patentTrend = data.data.patentTrend;
+            this.entForm.patentType = data.data.patentType;
+            this.entForm.caseReason = data.data.caseReason;
+            this.entForm.caseTrend = data.data.caseTrend;
             this.entForm.priority = data.data.priority;
             this.entForm.entity = JSON.stringify(data.data.entity);
           }else{

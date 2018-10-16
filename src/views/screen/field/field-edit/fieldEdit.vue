@@ -31,7 +31,7 @@
           <el-input v-model="fieldForm.patentTypeProvince"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('fieldForm')">立即创建</el-button>
+          <el-button type="primary" @click="submitForm('fieldForm')">保存</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -73,22 +73,17 @@ var _FieldEditService = new FieldEditService();
             let params = {
               name: this.fieldForm.name,
               logo: this.fieldForm.logo,
-              patentOwner: this.fieldForm.patentOwner,
-              patentCateOwner: this.fieldForm.patentCateOwner,
-              patentTypeOwner: this.fieldForm.patentTypeOwner,
-              patentType: this.fieldForm.patentType,
-              patentProvince: this.fieldForm.patentProvince,
-              patentTypeProvince: this.fieldForm.patentTypeProvince
-              // patentOwner: this.fieldForm.patentOwner !== '' ? JSON.parse(this.fieldForm.patentOwner) : {},
-              // patentCateOwner: this.fieldForm.patentCateOwner !== '' ? JSON.parse(this.fieldForm.patentCateOwner) : {},
-              // patentTypeOwner: this.fieldForm.patentTypeOwner !== '' ? JSON.parse(this.fieldForm.patentTypeOwner) : {},
-              // patentType: this.fieldForm.patentType !== '' ? JSON.parse(this.fieldForm.patentType) : {},
-              // patentProvince: this.fieldForm.patentProvince !== '' ? JSON.parse(this.fieldForm.patentProvince) : {},
-              // patentTypeProvince: this.fieldForm.patentTypeProvince !== '' ? JSON.parse(this.fieldForm.patentTypeProvince) : {}
+              patentOwner: this.fieldForm.patentOwner !== '' ? this.fieldForm.patentOwner : "{}",
+              patentCateOwner: this.fieldForm.patentCateOwner !== '' ? this.fieldForm.patentCateOwner : "{}",
+              patentTypeOwner: this.fieldForm.patentTypeOwner !== '' ? this.fieldForm.patentTypeOwner : "[]",
+              patentType: this.fieldForm.patentType !== '' ? this.fieldForm.patentType : "[]",
+              patentProvince: this.fieldForm.patentProvince !== '' ? this.fieldForm.patentProvince : "{}",
+              patentTypeProvince: this.fieldForm.patentTypeProvince !== '' ? this.fieldForm.patentTypeProvince : "[]"
             }
             _FieldEditService.addFieldData(params).then(data => {
               if (data.code == 2000) {
                 this.$message.success('添加数据成功');
+                this.$router.push({name:'field'});
               } else {
                 return false;
               }
@@ -101,18 +96,18 @@ var _FieldEditService = new FieldEditService();
           fieldId: this.fieldForm.fieldId,
           name: this.fieldForm.name,
           logo: this.fieldForm.logo,
-          patentOwner: this.fieldForm.patentOwner,
-          patentCateOwner: this.fieldForm.patentCateOwner,
-          patentTypeOwner: this.fieldForm.patentTypeOwner,
-          patentType: this.fieldForm.patentType,
-          patentProvince: this.fieldForm.patentProvince,
-          patentTypeProvince: this.fieldForm.patentTypeProvince
+          patentOwner: this.fieldForm.patentOwner !== '' ? this.fieldForm.patentOwner : "{}",
+          patentCateOwner: this.fieldForm.patentCateOwner !== '' ? this.fieldForm.patentCateOwner : "{}",
+          patentTypeOwner: this.fieldForm.patentTypeOwner !== '' ? this.fieldForm.patentTypeOwner : "[]",
+          patentType: this.fieldForm.patentType !== '' ? this.fieldForm.patentType : "[]",
+          patentProvince: this.fieldForm.patentProvince !== '' ? this.fieldForm.patentProvince : "{}",
+          patentTypeProvince: this.fieldForm.patentTypeProvince !== '' ? this.fieldForm.patentTypeProvince : "[]"
         }
         _FieldEditService.updateFieldData(params).then(data=>{
           console.log(data)
           if(data.code==2000){
-            this.$message.success('更改数据成功')
-            this.$router.push({name:'patentList'})
+            this.$message.success('更改数据成功');
+            this.$router.push({name:'field'});
           }else{
             this.$message.error(data.message)
           }
@@ -130,12 +125,12 @@ var _FieldEditService = new FieldEditService();
             this.fieldForm.fieldId = data.data.fieldId;
             this.fieldForm.name = data.data.name;
             this.fieldForm.logo = data.data.logo;
-            this.fieldForm.patentOwner = JSON.stringify(data.data.patentOwner);
-            this.fieldForm.patentCateOwner = JSON.stringify(data.data.patentCateOwner);
-            this.fieldForm.patentTypeOwner = JSON.stringify(data.data.patentTypeOwner);
-            this.fieldForm.patentType = JSON.stringify(data.data.patentType);
-            this.fieldForm.patentProvince = JSON.stringify(data.data.patentProvince);
-            this.fieldForm.patentTypeProvince = JSON.stringify(data.data.patentTypeProvince);    
+            this.fieldForm.patentOwner = data.data.patentOwner;
+            this.fieldForm.patentCateOwner = data.data.patentCateOwner;
+            this.fieldForm.patentTypeOwner = data.data.patentTypeOwner;
+            this.fieldForm.patentType = data.data.patentType;
+            this.fieldForm.patentProvince = data.data.patentProvince;
+            this.fieldForm.patentTypeProvince = data.data.patentTypeProvince;    
           }else{
             this.$message.error(data.message)
           }

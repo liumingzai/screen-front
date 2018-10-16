@@ -5,13 +5,6 @@ class EntityEditService {
     this.http = new Http();
   }
 
-  //获取数据列表
-  getDataList(params){
-    const method = 'innoEntity/getEntitys'
-    return this.http.GET(method,params)  
-
-  }
-
   //添加创新载体专利数据
   addEntityData(params){
     const method = 'innoEntity/addEntity'
@@ -29,12 +22,6 @@ class EntityEditService {
   updateEntityData(params){
     const method = 'innoEntity/updateEntity'
     return this.http.POST(method,params)
-  }
-
-  //删除数据
-  deleteEntityData(id){
-    const method = 'innoEntity/deleteEntity'
-    return this.http.DELETE(method,{patentId:id}) 
   }
 }
 

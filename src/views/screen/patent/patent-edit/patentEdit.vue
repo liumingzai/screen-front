@@ -77,6 +77,7 @@ var _PatentEditService = new PatentEditService();
             _PatentEditService.addPatentData(params).then(data => {
               if (data.code == 2000) {
                 this.$message.success('添加数据成功');
+                this.$router.push({name:'patent'})
               } else {
                 return false;
               }
@@ -95,8 +96,8 @@ var _PatentEditService = new PatentEditService();
         _PatentEditService.updatePatentData(params).then(data=>{
           console.log(data)
           if(data.code==2000){
-            this.$message.success('更改数据成功')
-            this.$router.push({name:'patentList'})
+            this.$message.success('更改数据成功');
+            this.$router.push({name:'patent'});
           }else{
             this.$message.error(data.message)
           }

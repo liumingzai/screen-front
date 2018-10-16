@@ -5,12 +5,6 @@ class PatentEditService {
     this.http = new Http();
   }
 
-  //获取数据列表
-  getDataList(params){
-    const method = 'innoPatent/getPatents'
-    return this.http.GET(method,params)  
-
-  }
 
   //添加创新载体专利数据
   addPatentData(params){
@@ -31,11 +25,6 @@ class PatentEditService {
     return this.http.POST(method,params)
   }
 
-  //删除数据
-  deletePatentData(id){
-    const method = 'innoPatent/deletePatent'
-    return this.http.DELETE(method,{patentId:id}) 
-  }
 }
 
-  export default PatentEditService;
+export default PatentEditService;

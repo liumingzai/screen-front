@@ -23,7 +23,9 @@ import DataEdit from "@/views/screen/data/data-edit/dataEdit";
 
 Vue.use(Router);
 
-export default new Router({
+
+
+const router = new Router({
   routes: [
     {
       path: "/",
@@ -76,7 +78,7 @@ export default new Router({
       children: [
         {
           path:'entity',
-          name:'entityList',
+          // name:'entityList',
           component:Layout,
           children:[
             {path:'/',name:'entity',component:Entity}, 
@@ -85,7 +87,7 @@ export default new Router({
         },
         {
           path:'ent',
-          name:'entList',
+          // name:'entList',
           component:Layout,
           children:[
             {path:'/',name:'ent',component:Ent}, 
@@ -94,7 +96,7 @@ export default new Router({
         },
         {
           path:'field',
-          name:'fieldList',
+          // name:'fieldList',
           component:Layout,
           children:[
             {path:'/',name:'field',component:Field}, 
@@ -103,7 +105,7 @@ export default new Router({
         },
         {
           path:'patent',
-          name:'patentList',
+          // name:'patentList',
           component:Layout,
           children:[
             {path:'/',name:'patent',component:Patent}, 
@@ -114,3 +116,12 @@ export default new Router({
     }
   ]
 });
+
+// router.beforeEach((to, from, next) => {
+//   if (to.meta.title) {//如果设置标题，拦截后设置标题
+//     document.title = to.meta.title
+//   }
+//   next()
+// })
+
+export default router;

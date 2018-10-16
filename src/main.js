@@ -11,6 +11,7 @@ import '../static/css/base.css';
 Vue.use(ElementUI);
 
 Vue.config.productionTip = false
+window.router=router
 
 /* eslint-disable no-new */
 new Vue({

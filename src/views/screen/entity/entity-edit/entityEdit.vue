@@ -31,7 +31,7 @@
           <el-input v-model="entityForm.mainIndustry"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('entityForm')">立即创建</el-button>
+          <el-button type="primary" @click="submitForm('entityForm')">保存</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -78,11 +78,12 @@ var _EntityEditService = new EntityEditService();
               area: this.entityForm.area,
               entCount: this.entityForm.entCount,
               personCount: this.entityForm.personCount,
-              mainIndustry: this.entityForm.mainIndustry !== '' ? JSON.parse(this.entityForm.mainIndustry) : "[]"
+              mainIndustry: this.entityForm.mainIndustry !== '' ? this.entityForm.mainIndustry : "[]"
             }
             _EntityEditService.addEntityData(params).then(data => {
               if (data.code == 2000) {
                 this.$message.success('添加数据成功');
+                this.$router.push({name:'entity'});
               } else {
                 return false;
               }
@@ -100,13 +101,13 @@ var _EntityEditService = new EntityEditService();
           area: this.entityForm.area,
           entCount: this.entityForm.entCount,
           personCount: this.entityForm.personCount,
-          mainIndustry: this.entityForm.mainIndustry !== '' ? JSON.parse(this.entityForm.mainIndustry) : "[]"
+          mainIndustry: this.entityForm.mainIndustry !== '' ? this.entityForm.mainIndustry : "[]"
         }
         _EntityEditService.updateEntityData(params).then(data=>{
           console.log(data)
           if(data.code==2000){
-            this.$message.success('更改数据成功')
-            this.$router.push({name:'patentList'})
+            this.$message.success('更改数据成功');
+            this.$router.push({name:'entity'});
           }else{
             this.$message.error(data.message)
           }
@@ -130,7 +131,7 @@ var _EntityEditService = new EntityEditService();
           this.entityForm.area = data.data.area,
           this.entityForm.entCount = data.data.entCount,
           this.entityForm.personCount = data.data.personCount,
-          this.entityForm.mainIndustry = JSON.stringify(data.data.mainIndustry);   
+          this.entityForm.mainIndustry = data.data.mainIndustry;   
           }else{
             this.$message.error(data.message)
           }

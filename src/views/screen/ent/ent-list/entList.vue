@@ -9,7 +9,7 @@
 
     </div>
 
- <div>
+    <div style="margin-top:20px;">
 
       <el-table 
       ref="multipleTable" 
@@ -134,39 +134,35 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      })
-        .then(() => {
-          _EntListService
-            .deleteData(row.id)
-            .then(data => {
-              console.log(data);
-              if (data.code == 2000) {
-                this.$message.success("删除数据成功");
-                this.totalPageData -= 1;
-                if (this.totalPageData / 10 <= 1) {
-                  this.searchParams.pageNum = 1;
-                } else if (
-                  this.totalPageData / 10 ==
-                  this.searchParams.pageNum - 1
-                ) {
-                  this.searchParams.pageNum--;
-                } else {
-                  this.searchParams.pageNum = this.searchParams.pageNum;
-                }
-                this.getDataList();
-              }
-            })
-            .catch(err => {
-              console.log(err);
-              this.$message.error("网络错误");
-            });
+      }).then(() => {
+        _EntListService.deleteEntData(row.id).then(data => {
+          if (data.code == 2000) {
+            this.$message.success("删除数据成功");
+            this.totalPageData -= 1;
+            if (this.totalPageData / 10 <= 1) {
+              this.searchParams.pageNum = 1;
+            } else if (
+              this.totalPageData / 10 ==
+              this.searchParams.pageNum - 1
+            ) {
+              this.searchParams.pageNum--;
+            } else {
+              this.searchParams.pageNum = this.searchParams.pageNum;
+            }
+            this.getDataList();
+          }
         })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除"
-          });
+        .catch(err => {
+          console.log(err);
+          this.$message.error("网络错误");
         });
+      })
+      .catch(() => {
+        this.$message({
+          type: "info",
+          message: "已取消删除"
+        });
+      });
     },
     //分页处理
     handlePage(num) {
