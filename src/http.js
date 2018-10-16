@@ -13,7 +13,7 @@ import queryString from "query-string";
  */
 class Http {
   constructor() {
-    this.isProd = false;
+    this.isProd = true;
     this.base = this.isProd ? '' : 'http://192.168.1.151:90'; //screen-portal
     this.host = window.location.protocol + '//' + window.location.host;
     this.baseURL = `${this.base  || this.host}/screen-portal`; 
