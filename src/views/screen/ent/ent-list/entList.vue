@@ -69,7 +69,7 @@
 
 <script>
 import moment from "moment";
-import EntListService from "./entListService";
+import EntListService from "./entsListService";
 var _EntListService = new EntListService();
 
 export default {
