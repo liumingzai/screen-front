@@ -13,9 +13,11 @@ import queryString from "query-string";
  */
 class Http {
   constructor() {
-    this.baseURL = "http://192.168.1.151:90/screen-portal"; // dev
-    // this.baseURL = 'ark-portal' // prod
-    this.imgPathPre = "http://192.168.1.145/dc/";
+    this.isProd = false;
+    this.base = this.isProd ? '' : 'http://192.168.1.151:90'; //screen-portal
+    this.host = window.location.protocol + '//' + window.location.host;
+    this.baseURL = `${this.base  || this.host}/screen-portal`; 
+    this.imgPathPre = `${this.base || this.host}/images`;  // "http://192.168.1.145/dc/";
 
     this.axios = axios.create({
       withCredentials: true,
