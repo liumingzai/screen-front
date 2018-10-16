@@ -31,7 +31,8 @@ const router = new Router({
       path: "/",
       name: "home",
       component: Home,
-      redirect:'/login'
+      // redirect:'/login'
+      redirect: '/inno/entity'
     },
     {
       path: "/login",
