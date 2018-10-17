@@ -12,6 +12,19 @@
         <el-form-item label="载体名称" prop="name">
           <el-input v-model="entityForm.name"></el-input>
         </el-form-item>
+        <el-form-item label="载体Logo" prop="logo">
+          <el-upload 
+            action="/innoEntity/uploadLogoPicture" 
+            :beforeUpload="beforePicUpload" 
+            :onError="uploadError" 
+            :http-request='uploadPicFile' 
+            :on-success='onSuccess' 
+            :show-file-list="false">
+            <!--<el-button size="small" type="primary">上传头像</el-button>-->
+            <img v-if="entityForm.logo" :src="entityForm.logo" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </el-form-item>
         <el-form-item label="载体地址" prop="address">
           <el-input v-model="entityForm.address"></el-input>
         </el-form-item>
@@ -115,6 +128,48 @@ var _EntityEditService = new EntityEditService();
           console.log(err)
           this.$message.error('网络错误')
         })  
+      },
+      onSuccess(res, file, fileList) {
+        console.log(fileList);
+      },
+      uploadPicFile(param) {
+        //自定义文件上传
+        var _this = this;
+        var fd = new FormData();
+        fd.append("upload", param.file);
+        var xhr = new XMLHttpRequest();
+        xhr.open("post", "http://192.168.1.151:90/screen-portal/innoEntity/uploadLogoPicture", true);
+        xhr.send(fd);
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            const res = JSON.parse(xhr.response);
+            console.log(res);
+            if (res.code == 2000) {
+              _this.$message.success("上传文件成功");
+              _this.entityForm.logo=res.data
+            } else {
+              _this.$message.error(res.message);
+            }
+          } else {
+            _this.$message.error("网络错误");
+          }
+        };
+      },
+      beforePicUpload(file) {
+        console.log(file)
+        if(file.type!='image/png' && file.type!='image/jpeg'){
+          this.$message.error("图片只能为jpg或png格式")
+          return false
+        }
+
+        if(file.size/1024/1024>2){
+          this.$message.error('图片大小不超过2M')
+          return false
+        }
+
+        return true
+      },
+      uploadError(response, file, fileList) {
       }
     },
     created(){
