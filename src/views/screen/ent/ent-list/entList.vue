@@ -79,8 +79,7 @@ export default {
       totalPageData: null,
       dataList: [],
       searchParams: {
-        pageNum: 1,
-        entityId: 5
+        pageNum: 1
       },
       loading: true,
       operationTpye: "",
@@ -93,7 +92,6 @@ export default {
       _EntListService
         .getDataList(this.searchParams)
         .then(data => {
-          console.log(data);
           if (data.code == 2000) {
             this.totalPageData = data.size;
             this.dataList = data.data.map(item => {

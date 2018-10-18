@@ -68,8 +68,7 @@ export default {
       totalPageData: null,
       dataList: [],
       searchParams: {
-        pageNum: 1,
-        fieldId: 1
+        pageNum: 1
       },
       loading: true,
       operationTpye: "",
