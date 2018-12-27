@@ -44,7 +44,7 @@
              </el-form-item>
 
              <el-form-item label='上传文件' v-show="uploadCsvisible">
-                  <el-upload action="http://192.168.1.151:90/screen-portal/data/uploadDataCsv" 
+                  <el-upload action="http://180.76.186.212:90/screen-portal/data/uploadDataCsv" 
                   :beforeUpload="beforeCsvUpload" 
                   :onError="uploadError" 
                   :http-request='uploadCsvFile' 

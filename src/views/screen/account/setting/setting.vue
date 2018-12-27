@@ -7,7 +7,7 @@
       <div class="st_box_chd">
 
         <el-upload 
-        action="http://192.168.1.151:90/screen-portal/common/uploadHeadPicture" 
+        action="http://180.76.186.212:90/screen-portal/common/uploadHeadPicture" 
         :beforeUpload="beforePicUpload" 
         :onError="uploadError" 
         :http-request='uploadPicFile' 

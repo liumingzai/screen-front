@@ -55,6 +55,8 @@
 
 <script>
 import FieldEditService from "./fieldEditService";
+import Http from "../../../../http.js"
+var _app = new Http();
 var _FieldEditService = new FieldEditService();
 
   export default {
@@ -138,7 +140,7 @@ var _FieldEditService = new FieldEditService();
         var fd = new FormData();
         fd.append("upload", param.file);
         var xhr = new XMLHttpRequest();
-        xhr.open("post", "http://192.168.1.151:90/screen-portal/innoEntity/uploadLogoPicture", true);
+        xhr.open("post",  _app.baseURL + "/innoEntity/uploadLogoPicture", true);
         xhr.send(fd);
         xhr.onreadystatechange = function() {
           if (xhr.readyState === 4 && xhr.status === 200) {
