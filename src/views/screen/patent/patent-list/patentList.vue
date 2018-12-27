@@ -45,6 +45,7 @@
       <el-pagination 
       background layout="prev, pager, next" 
       :total='totalPageData' 
+      :page-size="pagesize"
       @current-change='handlePage' 
       :current-page.sync='searchParams.pageNum'>
 
@@ -66,6 +67,7 @@ export default {
   data() {
     return {
       totalPageData: null,
+      pagesize: 8,
       dataList: [],
       searchParams: {
         pageNum: 1
