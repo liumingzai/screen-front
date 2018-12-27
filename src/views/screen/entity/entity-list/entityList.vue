@@ -138,10 +138,10 @@ export default {
           if (data.code == 2000) {
             this.$message.success("删除数据成功");
             this.totalPageData -= 1;
-            if (this.totalPageData / 10 <= 1) {
+            if (this.totalPageData / 8 <= 1) {
               this.searchParams.pageNum = 1;
             } else if (
-              this.totalPageData / 10 ==
+              this.totalPageData / 8 ==
               this.searchParams.pageNum - 1
             ) {
               this.searchParams.pageNum--;
