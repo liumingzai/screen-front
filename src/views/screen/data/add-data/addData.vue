@@ -44,7 +44,7 @@
              </el-form-item>
 
              <el-form-item label='上传文件' v-show="uploadCsvisible">
-                  <el-upload action="http://180.76.186.212:90/screen-portal/data/uploadDataCsv" 
+                  <el-upload action="/data/uploadDataCsv"  
                   :beforeUpload="beforeCsvUpload" 
                   :onError="uploadError" 
                   :http-request='uploadCsvFile' 
@@ -85,7 +85,10 @@
 
 <script>
 import AddDataService from './addDataService'
+import Http from '../../../../http.js';
 var _AddDataService = new AddDataService()
+var _app = new Http();
+
 //引入表格插件
 import Handsontable from 'handsontable-pro/dist/handsontable.full.js'
 var table = null

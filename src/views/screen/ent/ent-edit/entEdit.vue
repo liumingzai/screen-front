@@ -95,15 +95,34 @@ var _EntEditService = new EntEditService();
               priority: this.entForm.priority,
               entity: this.entForm.entity !== '' ? JSON.parse(this.entForm.entity) : {}
             }
-            _EntEditService.addEntData(params).then(data => {
-              if (data.code == 2000) {
-                this.$message.success('添加数据成功');
-                this.$router.push({name:'entity'});
-              } else {
-                this.$message.error(data.message);
-                return false;
-              }
-            });
+            if(this.entForm.entId) {
+              params.id = this.entForm.entId;
+              _EntEditService.updateEntData(params).then(data=>{
+                if(data.code==2000){
+                  this.$message.success('更改数据成功');
+                  this.$router.push({name:'entity'});
+                }else{
+                  this.$message.error(data.message);
+                  return false;
+                }
+              }).catch(err=>{
+                console.log(err)
+                this.$message.error('网络错误')
+              }); 
+            } else {
+              _EntEditService.addEntData(params).then(data => {
+                if (data.code == 2000) {
+                  this.$message.success('添加数据成功');
+                  this.$router.push({name:'entity'});
+                } else {
+                  this.$message.error(data.message);
+                  return false;
+                }
+              }).catch(err=>{
+                console.log(err)
+                this.$message.error('网络错误')
+              }); 
+            }
           }
         });
       },
@@ -130,7 +149,7 @@ var _EntEditService = new EntEditService();
         }).catch(err=>{
           console.log(err)
           this.$message.error('网络错误')
-        })  
+        });  
       }
     },
     created(){
@@ -138,7 +157,7 @@ var _EntEditService = new EntEditService();
       if (this.dataId) {
        _EntEditService.getEntDataById(this.dataId).then((data) => {
           if(data.code==2000){
-            this.entForm.entId = data.data.entId;
+            this.entForm.entId = data.data.id;
             this.entForm.name = data.data.name;
             this.entForm.regCapi = data.data.regCapi;
             this.entForm.foundDate = data.data.foundDate;

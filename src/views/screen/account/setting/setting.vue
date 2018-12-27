@@ -6,8 +6,7 @@
       </div>
       <div class="st_box_chd">
 
-        <el-upload 
-        action="http://180.76.186.212:90/screen-portal/common/uploadHeadPicture" 
+        <el-upload action="/common/uploadHeadPicture"
         :beforeUpload="beforePicUpload" 
         :onError="uploadError" 
         :http-request='uploadPicFile' 
@@ -59,7 +58,10 @@
 
 <script>
 import SettingService from './settingService'
+import Http from '../../../../http.js';
 var _SettingService = new SettingService() 
+var _app = new Http();
+
 import axios from 'axios'
 export default {
   name: "setting",

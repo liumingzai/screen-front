@@ -95,41 +95,36 @@ var _FieldEditService = new FieldEditService();
               patentProvince: this.fieldForm.patentProvince !== '' ? this.fieldForm.patentProvince : "{}",
               patentTypeProvince: this.fieldForm.patentTypeProvince !== '' ? this.fieldForm.patentTypeProvince : "[]"
             }
-            _FieldEditService.addFieldData(params).then(data => {
-              if (data.code == 2000) {
-                this.$message.success('添加数据成功');
-                this.$router.push({name:'field'});
-              } else {
-                return false;
-              }
-            });
+            if(this.fieldForm.fieldId) {
+              params.id = this.fieldForm.fieldId;
+              _FieldEditService.updateFieldData(params).then(data=>{
+                if(data.code==2000){
+                  this.$message.success('更改数据成功');
+                  this.$router.push({name:'field'});
+                }else{
+                  this.$message.error(data.message);
+                  return false;
+                }
+              }).catch(err=>{
+                console.log(err)
+                this.$message.error('网络错误')
+              });
+            }else{
+             _FieldEditService.addFieldData(params).then(data => {
+                if (data.code == 2000) {
+                  this.$message.success('添加数据成功');
+                  this.$router.push({name:'field'});
+                } else {
+                  this.$message.error(data.message);
+                  return false;
+                }
+              }).catch(err=>{
+                console.log(err)
+                this.$message.error('网络错误')
+              });
+            }
           }
         });
-      },
-      updateData(){
-        let params = {
-          fieldId: this.fieldForm.fieldId,
-          name: this.fieldForm.name,
-          logo: this.fieldForm.logo,
-          patentOwner: this.fieldForm.patentOwner !== '' ? this.fieldForm.patentOwner : "{}",
-          patentCateOwner: this.fieldForm.patentCateOwner !== '' ? this.fieldForm.patentCateOwner : "{}",
-          patentTypeOwner: this.fieldForm.patentTypeOwner !== '' ? this.fieldForm.patentTypeOwner : "[]",
-          patentType: this.fieldForm.patentType !== '' ? this.fieldForm.patentType : "[]",
-          patentProvince: this.fieldForm.patentProvince !== '' ? this.fieldForm.patentProvince : "{}",
-          patentTypeProvince: this.fieldForm.patentTypeProvince !== '' ? this.fieldForm.patentTypeProvince : "[]"
-        }
-        _FieldEditService.updateFieldData(params).then(data=>{
-          console.log(data)
-          if(data.code==2000){
-            this.$message.success('更改数据成功');
-            this.$router.push({name:'field'});
-          }else{
-            this.$message.error(data.message)
-          }
-        }).catch(err=>{
-          console.log(err)
-          this.$message.error('网络错误')
-        })  
       },
       onSuccess(res, file, fileList) {
         console.log(fileList);
@@ -179,7 +174,7 @@ var _FieldEditService = new FieldEditService();
       if (this.dataId) {
         _FieldEditService.getFieldDataById(this.dataId).then((data) => {
           if(data.code==2000){
-            this.fieldForm.fieldId = data.data.fieldId;
+            this.fieldForm.fieldId = data.data.id;
             this.fieldForm.name = data.data.name;
             this.fieldForm.logo = data.data.logo;
             this.fieldForm.patentOwner = data.data.patentOwner;

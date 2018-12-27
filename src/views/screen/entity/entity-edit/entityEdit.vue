@@ -83,6 +83,7 @@ var _EntityEditService = new EntityEditService();
     methods: {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
+          debugger;
           if (valid) {
             // 针对field的json处理
             let params = {
@@ -95,41 +96,28 @@ var _EntityEditService = new EntityEditService();
               personCount: this.entityForm.personCount,
               mainIndustry: this.entityForm.mainIndustry !== '' ? this.entityForm.mainIndustry : "[]"
             }
-            _EntityEditService.addEntityData(params).then(data => {
-              if (data.code == 2000) {
-                this.$message.success('添加数据成功');
-                this.$router.push({name:'entity'});
-              } else {
-                return false;
-              }
-            });
+            if(this.entityForm.entityId) {
+              params.id = this.entityForm.entityId;
+              _EntityEditService.updateEntityData(params).then(data=>{
+                if(data.code==2000){
+                  this.$message.success('更改数据成功');
+                  this.$router.push({name:'entity'});
+                }else{
+                  this.$message.error(data.message);
+                }
+              });
+            }else{
+              _EntityEditService.addEntityData(params).then(data => {
+                if (data.code == 2000) {
+                  this.$message.success('添加数据成功');
+                  this.$router.push({name:'entity'});
+                } else {
+                this.$message.error(data.message)
+                }
+              });
+            }
           }
         });
-      },
-      updateData(){
-        let params = {
-          entityId: this.entityForm.entityId,
-          name: this.entityForm.name,
-          logo: this.entityForm.logo,
-          address: this.entityForm.address,
-          investCount: this.entityForm.investCount,
-          area: this.entityForm.area,
-          entCount: this.entityForm.entCount,
-          personCount: this.entityForm.personCount,
-          mainIndustry: this.entityForm.mainIndustry !== '' ? this.entityForm.mainIndustry : "[]"
-        }
-        _EntityEditService.updateEntityData(params).then(data=>{
-          console.log(data)
-          if(data.code==2000){
-            this.$message.success('更改数据成功');
-            this.$router.push({name:'entity'});
-          }else{
-            this.$message.error(data.message)
-          }
-        }).catch(err=>{
-          console.log(err)
-          this.$message.error('网络错误')
-        })  
       },
       onSuccess(res, file, fileList) {
         console.log(fileList);
@@ -180,15 +168,15 @@ var _EntityEditService = new EntityEditService();
         _EntityEditService.getEntityDataById(this.dataId).then((data) => {
           console.log(data)
           if(data.code==2000){
-          this.entityForm.entityId = data.data.entityId
-          this.entityForm.name = data.data.name,
-          this.entityForm.logo = data.data.logo,
-          this.entityForm.address = data.data.address,
-          this.entityForm.investCount = data.data.investCount,
-          this.entityForm.area = data.data.area,
-          this.entityForm.entCount = data.data.entCount,
-          this.entityForm.personCount = data.data.personCount,
-          this.entityForm.mainIndustry = data.data.mainIndustry;   
+            this.entityForm.entityId = data.data.id;
+            this.entityForm.name = data.data.name;
+            this.entityForm.logo = data.data.logo;
+            this.entityForm.address = data.data.address;
+            this.entityForm.investCount = data.data.investCount;
+            this.entityForm.area = data.data.area;
+            this.entityForm.entCount = data.data.entCount;
+            this.entityForm.personCount = data.data.personCount;
+            this.entityForm.mainIndustry = data.data.mainIndustry;
           }else{
             this.$message.error(data.message)
           }

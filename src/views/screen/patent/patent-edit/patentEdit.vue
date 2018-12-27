@@ -74,37 +74,34 @@ var _PatentEditService = new PatentEditService();
               appDate: this.patentForm.appDate,
               field: this.patentForm.field !== '' ? JSON.parse(this.patentForm.field) : {}
             }
-            _PatentEditService.addPatentData(params).then(data => {
-              if (data.code == 2000) {
-                this.$message.success('添加数据成功');
-                this.$router.push({name:'patent'})
-              } else {
-                return false;
-              }
-            });
+            if(this.fieldForm.fieldId) {
+              params.id = this.patentForm.patentId;
+               _PatentEditService.updatePatentData(params).then(data=>{
+                if(data.code==2000){
+                  this.$message.success('更改数据成功');
+                  this.$router.push({name:'patent'});
+                }else{
+                  this.$message.error(data.message)
+                }
+              }).catch(err=>{
+                console.log(err)
+                this.$message.error('网络错误')
+              });  
+            }else{
+              _PatentEditService.addPatentData(params).then(data => {
+                if (data.code == 2000) {
+                  this.$message.success('添加数据成功');
+                  this.$router.push({name:'patent'})
+                } else {
+                  return false;
+                }
+               }).catch(err=>{
+                console.log(err)
+                this.$message.error('网络错误')
+              });
+            }
           }
         });
-      },
-      updateData(){
-        let params = {
-          patentId: this.patentForm.patentId,
-          name: this.patentForm.name,
-          owner: this.patentForm.owner,
-          appDate: this.patentForm.appDate,
-          field: this.patentForm.field !== '' ? JSON.parse(this.patentForm.field) : {}
-        }
-        _PatentEditService.updatePatentData(params).then(data=>{
-          console.log(data)
-          if(data.code==2000){
-            this.$message.success('更改数据成功');
-            this.$router.push({name:'patent'});
-          }else{
-            this.$message.error(data.message)
-          }
-        }).catch(err=>{
-          console.log(err)
-          this.$message.error('网络错误')
-        })  
       }
     },
     created(){
@@ -113,11 +110,11 @@ var _PatentEditService = new PatentEditService();
         _PatentEditService.getPatentDataById(this.dataId).then((data) => {
           console.log(data)
           if(data.code==2000){
-            this.patentForm.patentId = data.data.patentId,
+            this.patentForm.patentId = data.data.id;
             this.patentForm.name=data.data.name;
             this.patentForm.owner=data.data.owner;
             this.patentForm.appDate=data.data.appDate;
-            this.patentForm.field=JSON.stringify(data.data.field)
+            this.patentForm.field=JSON.stringify(data.data.field);
           }else{
             this.$message.error(data.message)
           }
